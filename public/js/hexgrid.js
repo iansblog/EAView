@@ -70,82 +70,27 @@ function renderCapabilityHexGrid(container, data) {
     const totalHeight = currentY + maxRowHeight + margin.top + margin.bottom;
     svg.attr("height", totalHeight);    function calculateBlockHeight(capability) {
         const headerHeight = 40;
-        const minHeight = 200;
-        const childPadding = 15;
-        const contentPadding = 25;
-        const descriptionLineHeight = 20;
-        const childLineHeight = 18;
+        const topPadding = 20;
+        const bottomPadding = 20;
+        const childSpacing = 10;
+        const childHeight = 40;
+        const minHeight = 150;
         
         // Start with header height plus top padding
-        let totalHeight = headerHeight + contentPadding;
+        let totalHeight = headerHeight + topPadding;
         
-        // Calculate description height with proper text wrapping
-        if (capability.description) {
-            const maxWidth = blockWidth - 50; // Increased padding for better readability
-            const words = capability.description.split(' ');
-            let currentLine = '';
-            let lineCount = 0;
-
-            words.forEach(word => {
-                const testLine = currentLine + (currentLine ? ' ' : '') + word;
-                const testWidth = getTextWidth(testLine, "14px Arial");
-                
-                if (testWidth > maxWidth && currentLine) {
-                    lineCount++;
-                    currentLine = word;
-                } else {
-                    currentLine = testLine;
-                }
-            });
-            if (currentLine) lineCount++;
-            
-            totalHeight += (lineCount * descriptionLineHeight) + 15; // Added extra spacing after description
-        }
-
-        // Calculate children height with improved spacing
+        // Calculate total height needed for all children
         if (capability.children && capability.children.length > 0) {
-            let childrenHeight = 0;
+            // Calculate space needed for all children including spacing between them
+            const childrenTotalHeight = capability.children.length * childHeight;
+            const spacingTotalHeight = Math.max(0, capability.children.length - 1) * childSpacing;
             
-            capability.children.forEach(child => {
-                const childWidth = blockWidth - 40; // Account for left and right padding
-                let childHeight = 40; // Base height for name and type
-
-                // Calculate description height with proper wrapping
-                if (child.description) {
-                    const maxWidth = childWidth - 40; // Increased padding for better readability
-                    const words = child.description.split(' ');
-                    let line = '';
-                    let lineCount = 0;
-
-                    words.forEach(word => {
-                        const testLine = line + (line ? ' ' : '') + word;
-                        const testWidth = getTextWidth(testLine, "12px Arial");
-                        
-                        if (testWidth > maxWidth && line) {
-                            lineCount++;
-                            line = word;
-                        } else {
-                            line = testLine;
-                        }
-                    });
-                    if (line) lineCount++;
-                    
-                    childHeight += (lineCount * childLineHeight) + 10; // Added padding after description
-                }
-
-                // Add height for systems/children badge with proper spacing
-                if (child.systems?.length > 0 || child.children?.length > 0) {
-                    childHeight += 25; // Increased for better badge placement
-                }
-
-                childrenHeight += childHeight + childPadding;
-            });
-
-            totalHeight += childrenHeight;
+            // Add extra bottom padding for the last child
+            totalHeight += childrenTotalHeight + spacingTotalHeight + bottomPadding;
         }
 
-        // Add bottom padding and ensure minimum height
-        return Math.max(totalHeight + contentPadding, minHeight);
+        // Return the maximum of calculated height or minimum height
+        return Math.max(totalHeight, minHeight);
     }function createCapabilityBlock(parent, capability, position, width, height) {
         const block = parent.append("g")
             .attr("class", "capability-block")
@@ -195,98 +140,46 @@ function renderCapabilityHexGrid(container, data) {
             .attr("dominant-baseline", "central")
             .text(capability.name);
 
-        // Description
-        let currentY = 50;
-        if (capability.description) {
-            const maxWidth = width - 40;
-            const words = capability.description.split(' ');
-            let line = '';
-            let lineCount = 0;
-
-            words.forEach(word => {
-                const testLine = line + (line ? ' ' : '') + word;
-                const testWidth = getTextWidth(testLine, "14px Arial");
-                
-                if (testWidth > maxWidth && line) {
-                    block.append("text")
-                        .attr("x", 20)
-                        .attr("y", currentY)
-                        .attr("font-size", "14px")
-                        .attr("fill", "#666")
-                        .text(line.trim());
-                    line = word;
-                    lineCount++;
-                    currentY += 20;
-                } else {
-                    line = testLine;
-                }
-            });
-
-            if (line) {
-                block.append("text")
-                    .attr("x", 20)
-                    .attr("y", currentY)
-                    .attr("font-size", "14px")
-                    .attr("fill", "#666")
-                    .text(line.trim());
-                currentY += 30;
-            }
-        }
-
-        // Add children
-        if (capability.children && capability.children.length > 0) {
-            const childContainer = block.append("g")
-                .attr("class", "children-container");
-            
-            let yPos = currentY;
-            capability.children.forEach((child, i) => {
-                const childHeight = createChildElement(childContainer, child, capability, yPos, width);
-                yPos += childHeight + 10;
-            });
-        }
+    // Add children section starting right after header
+    const childrenStartY = 50;    // Add children with improved positioning
+    if (capability.children && capability.children.length > 0) {
+        const childContainer = block.append("g")
+            .attr("class", "children-container")
+            .attr("transform", `translate(0,${childrenStartY})`);
+        
+        capability.children.forEach((child, i) => {
+            createChildElement(childContainer, child, capability, i, width);
+        });
+    }
     }    function createChildElement(parent, child, parentCap, index, width) {
-        const childPadding = 15;
         const standardHeight = 40;
         const leftPadding = 20;
+        const rightPadding = 40; // Space for badge
+        const childSpacing = 10;
+        
+        // Calculate vertical position with proper spacing
+        const yPos = index * (standardHeight + childSpacing);
         
         const childGroup = parent.append("g")
-            .attr("transform", `translate(10,${index})`)
+            .attr("transform", `translate(10,${yPos})`)
             .style("cursor", "pointer")
             .on("click", () => showCapabilityDetails(child, parentCap));
 
-        // Simple or complex child layout
-        const isSimple = !child.description && !child.systems && (!child.children || child.children.length === 0);
+        // Calculate child width with margins
+        const childWidth = width - 20; // 10px padding on each side
         
-        // Background
-        const childWidth = width - 20;
-        const childHeight = isSimple ? standardHeight : calculateChildHeight(child, childWidth);
-        
-        // Add a clip path to ensure content stays within bounds
-        const clipPathId = `clip-${Math.random().toString(36).substr(2, 9)}`;
-        childGroup.append("defs")
-            .append("clipPath")
-            .attr("id", clipPathId)
-            .append("rect")
-            .attr("width", childWidth)
-            .attr("height", childHeight)
-            .attr("rx", 6);
-
         // Background rectangle
         childGroup.append("rect")
             .attr("width", childWidth)
-            .attr("height", childHeight)
+            .attr("height", standardHeight)
             .attr("rx", 6)
             .attr("fill", child.color || "#f8f9fa")
             .attr("stroke", parentCap.color)
             .attr("stroke-width", 1);
 
-        // Create a group for content with clipping
-        const contentGroup = childGroup.append("g")
-            .attr("clip-path", `url(#${clipPathId})`);
-
         // Icon with improved positioning
         if (child.icon) {
-            contentGroup.append("text")
+            childGroup.append("text")
                 .attr("class", "fa")
                 .attr("x", leftPadding)
                 .attr("y", standardHeight/2)
@@ -296,109 +189,43 @@ function renderCapabilityHexGrid(container, data) {
                 .text(getIconUnicode(child.icon));
         }
 
-        // Name with consistent positioning
-        contentGroup.append("text")
+        // Name with consistent positioning and truncation if needed
+        const nameText = childGroup.append("text")
             .attr("x", child.icon ? leftPadding + 30 : leftPadding)
             .attr("y", standardHeight/2)
             .attr("dominant-baseline", "central")
             .attr("font-size", "14px")
             .attr("font-weight", "500")
             .attr("fill", child.color ? "#fff" : "#333")
-            .text(child.name);
-
-        if (!isSimple) {
-            let currentY = standardHeight + 5; // Added padding after header
-
-            // Description with improved text wrapping
-            if (child.description) {
-                const maxWidth = childWidth - (leftPadding * 2);
-                const words = child.description.split(' ');
-                let line = '';
-                let lines = [];
-
-                words.forEach(word => {
-                    const testLine = line + (line ? ' ' : '') + word;
-                    const testWidth = getTextWidth(testLine, "12px Arial");
-                    
-                    if (testWidth > maxWidth && line) {
-                        lines.push(line.trim());
-                        line = word;
-                    } else {
-                        line = testLine;
-                    }
-                });
-                if (line) lines.push(line.trim());
-
-                lines.forEach(line => {
-                    contentGroup.append("text")
-                        .attr("x", leftPadding)
-                        .attr("y", currentY)
-                        .attr("font-size", "12px")
-                        .attr("fill", child.color ? "#fff" : "#666")
-                        .text(line);
-                    currentY += 18;
-                });
-            }
-
-            // System/child count badge with improved positioning
-            if (child.systems?.length > 0 || child.children?.length > 0) {
-                const count = (child.systems?.length || 0) + (child.children?.length || 0);
-                const badge = childGroup.append("g")
-                    .attr("transform", `translate(${childWidth - 45}, ${isSimple ? 10 : childHeight - 30})`);
-
-                // Badge background with shadow
-                badge.append("rect")
-                    .attr("width", 30)
-                    .attr("height", 20)
-                    .attr("rx", 10)
-                    .attr("fill", parentCap.color)
-                    .style("filter", "drop-shadow(0 1px 2px rgba(0,0,0,0.1))");
-
-                // Badge count
-                badge.append("text")
-                    .attr("x", 15)
-                    .attr("y", 10)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .attr("fill", "#fff")
-                    .attr("font-size", "12px")
-                    .text(count);
-            }
-        }
-
-        return childHeight + childPadding;
-    }
-
-    function calculateChildHeight(child, width) {
-        let height = 40; // Base height for name
-        
-        if (child.description) {
-            const maxWidth = width - 30;
-            const words = child.description.split(' ');
-            let line = '';
-            let lineCount = 0;
-
-            words.forEach(word => {
-                const testLine = line + (line ? ' ' : '') + word;
-                const testWidth = getTextWidth(testLine, "12px Arial");
-                
-                if (testWidth > maxWidth && line) {
-                    lineCount++;
-                    line = word;
-                } else {
-                    line = testLine;
-                }
-            });
-            if (line) lineCount++;
-            
-            height += lineCount * 18;
-        }
-
+            .text(child.name);        // System/child count badge with improved positioning
         if (child.systems?.length > 0 || child.children?.length > 0) {
-            height += 20;
-        }
+            const count = (child.systems?.length || 0) + (child.children?.length || 0);
+            const badge = childGroup.append("g")
+                .attr("transform", `translate(${childWidth - 34}, ${standardHeight/2})`);
 
-        return Math.max(height + 10, 40);
+            // Badge background with shadow
+            badge.append("rect")
+                .attr("width", 24)
+                .attr("height", 16)
+                .attr("rx", 8)
+                .attr("transform", "translate(-12,-8)")
+                .attr("fill", parentCap.color)
+                .style("filter", "drop-shadow(0 1px 2px rgba(0,0,0,0.1))");
+
+            // Badge count
+            badge.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "central")
+                .attr("fill", "#fff")
+                .attr("font-size", "11px")
+                .text(count);
+        }
+        
+        return standardHeight;
+    }
+    
+    function calculateChildHeight(child, width) {
+        return 40; // Fixed height for consistency
     }
 
     function showCapabilityDetails(capability, parentCapability) {
