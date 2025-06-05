@@ -86,12 +86,34 @@ function renderCapabilitiesView(container, data) {
     // Function to calculate single block height
     function calculateBlockHeight(capability) {
         const headerHeight = 40;
+        const padding = 20;
+        const childPadding = 10;
+        const childHeight = 80;
         const descriptionHeight = capability.description ? 40 : 0;
-        const childHeight = 90; // Height per child
-        const padding = 40;
-        const childrenHeight = (capability.children?.length || 0) * childHeight;
         
-        return headerHeight + descriptionHeight + childrenHeight + padding;
+        // Calculate total height needed for children
+        let childrenHeight = 0;
+        if (capability.children?.length > 0) {
+            childrenHeight = capability.children.reduce((height, child) => {
+                // Base child height
+                let thisChildHeight = childHeight;
+                
+                // Add extra height for description if it wraps
+                if (child.description) {
+                    const words = child.description.split(' ');
+                    const wordsPerLine = 8; // Approximate words per line
+                    const lines = Math.ceil(words.length / wordsPerLine);
+                    if (lines > 1) {
+                        thisChildHeight += (lines - 1) * 18; // 18px per extra line
+                    }
+                }
+                
+                return height + thisChildHeight + childPadding;
+            }, 0);
+        }
+
+        // Total height with some extra padding for safety
+        return headerHeight + descriptionHeight + childrenHeight + (padding * 2);
     }
 
     // Function to create a capability block
