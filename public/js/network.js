@@ -14,17 +14,26 @@ function renderNetworkGraph(container, data) {
     const links = [];
     const groups = new Map();
 
+    // Load saved positions
+    const savedPositions = JSON.parse(localStorage.getItem('networkPositions') || '{}');
+
     // Process systems and their integrations
     function processSystem(system, groupName) {
         if (system.systems) {
             system.systems.forEach(sys => {
                 // Add node if it doesn't exist
                 if (!nodes.has(sys.name)) {
+                    const savedPos = savedPositions[sys.name];
                     nodes.set(sys.name, {
                         id: sys.name,
                         group: groupName,
                         technology: sys.technology,
-                        status: sys.status
+                        status: sys.status,
+                        // Restore saved position if available
+                        x: savedPos ? savedPos.x : null,
+                        y: savedPos ? savedPos.y : null,
+                        fx: savedPos ? savedPos.x : null,
+                        fy: savedPos ? savedPos.y : null
                     });
                 }
 
@@ -32,11 +41,17 @@ function renderNetworkGraph(container, data) {
                     sys.integrates.forEach(target => {
                         // Add target node if it doesn't exist
                         if (!nodes.has(target)) {
+                            const savedPos = savedPositions[target];
                             nodes.set(target, {
                                 id: target,
                                 group: 'Integration Target',
                                 technology: '',
-                                status: ''
+                                status: '',
+                                // Restore saved position if available
+                                x: savedPos ? savedPos.x : null,
+                                y: savedPos ? savedPos.y : null,
+                                fx: savedPos ? savedPos.x : null,
+                                fy: savedPos ? savedPos.y : null
                             });
                         }
 
@@ -97,15 +112,54 @@ function renderNetworkGraph(container, data) {
         .attr("stroke-opacity", 0.6)
         .attr("stroke-width", 2);
 
-    // Create nodes
+    // Create nodes with drag behavior
+    const drag = d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
+
+    function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+    }
+
+    function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        // Save positions when drag ends
+        const positions = {};
+        nodes.forEach(node => {
+            if (node.fx !== null && node.fy !== null) {
+                positions[node.id] = {
+                    x: node.fx,
+                    y: node.fy
+                };
+            }
+        });
+        localStorage.setItem('networkPositions', JSON.stringify(positions));
+    }
+
+    // Create nodes with enhanced drag behavior
     const node = graph.append("g")
         .selectAll("g")
         .data(Array.from(nodes.values()))
         .join("g")
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
+        .call(drag)
+        .on("dblclick", (event, d) => {
+            // Double click to release fixed position
+            d.fx = null;
+            d.fy = null;
+            simulation.alpha(0.3).restart();
+            // Update saved positions
+            const positions = JSON.parse(localStorage.getItem('networkPositions') || '{}');
+            delete positions[d.id];
+            localStorage.setItem('networkPositions', JSON.stringify(positions));
+        });
 
     // Add circles for nodes
     node.append("circle")
@@ -153,22 +207,4 @@ function renderNetworkGraph(container, data) {
         node
             .attr("transform", d => `translate(${d.x},${d.y})`);
     });
-
-    // Drag functions
-    function dragstarted(event) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        event.subject.fx = event.subject.x;
-        event.subject.fy = event.subject.y;
-    }
-
-    function dragged(event) {
-        event.subject.fx = event.x;
-        event.subject.fy = event.y;
-    }
-
-    function dragended(event) {
-        if (!event.active) simulation.alphaTarget(0);
-        event.subject.fx = null;
-        event.subject.fy = null;
-    }
 }

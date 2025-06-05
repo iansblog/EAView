@@ -33,6 +33,9 @@ function renderCurrentView() {
         case 'hexgrid':
             renderCapabilityHexGrid(viz, capData);
             break;
+        case 'capabilities':
+            renderCapabilitiesView(viz, capData);
+            break;
         case 'chord':
             renderChordDiagram(viz, capData);
             break;
