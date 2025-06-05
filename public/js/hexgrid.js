@@ -80,13 +80,17 @@ function renderCapabilityHexGrid(container, data) {
         // Add block header
         const headerHeight = 40;
         const header = block.append("g")
-            .attr("class", "block-header");
+            .attr("class", "block-header")
+            .style("cursor", "pointer")
+            .on("click", () => showCapabilityDetails(cap));
 
+        // Add clickable header background
         header.append("rect")
             .attr("width", blockWidth)
             .attr("height", headerHeight)
             .attr("rx", 8)
-            .attr("fill", layers[cap.layer].color);
+            .attr("fill", layers[cap.layer].color)
+            .attr("class", "header-bg");
 
         // Add header icon
         header.append("text")
@@ -140,15 +144,16 @@ function renderCapabilityHexGrid(container, data) {
             const y = hexPadding + row * (hexHeight * 0.75) + hexHeight/2;
 
             const hexGroup = contentArea.append("g")
-                .attr("transform", `translate(${x},${y})`);
+                .attr("class", "child-capability")
+                .attr("transform", `translate(${x},${y})`)
+                .style("cursor", "pointer");
 
-            // Add hexagon
+            // Add hexagon with click handler
             hexGroup.append("polygon")
                 .attr("points", hexPoints(hexRadius))
                 .attr("fill", d3.rgb(layers[cap.layer].color).brighter(0.7))
                 .attr("stroke", layers[cap.layer].color)
                 .attr("stroke-width", 2)
-                .style("cursor", "pointer")
                 .on("mouseover", function() {
                     d3.select(this)
                         .attr("stroke-width", 3)
@@ -161,7 +166,10 @@ function renderCapabilityHexGrid(container, data) {
                         .style("filter", "none");
                     hideTooltip();
                 })
-                .on("click", () => showCapabilityDetails(child));
+                .on("click", (event) => {
+                    event.stopPropagation(); // Prevent triggering parent block's click
+                    showCapabilityDetails(child, cap);
+                });
 
             // Add icon
             hexGroup.append("text")
@@ -270,114 +278,155 @@ function renderCapabilityHexGrid(container, data) {
     }
 
     // Enhanced capability details display
-    function showCapabilityDetails(capability) {
-        // Find all connected relationships
-        const relatedCaps = relationships
-            .filter(rel => rel.source === capability || rel.target === capability)
-            .map(rel => ({
-                name: rel.source === capability ? rel.target.name : rel.source.name,
-                type: rel.type,
-                direction: rel.source === capability ? "outbound" : "inbound"
-            }));
-
-        // Find all systems under this capability
-        const systems = [];
-        if (capability.children) {
-            capability.children.forEach(child => {
-                if (child.systems) {
-                    child.systems.forEach(sys => {
-                        systems.push({
-                            name: sys.name,
-                            type: sys.type || 'System',
-                            description: sys.description || '',
-                            integrations: sys.integrates || []
-                        });
-                    });
-                }
-            });
-        }
-
-        // Create or update details panel
+    function showCapabilityDetails(item, parentCapability) {
+        // Create or get details panel
         let detailsPanel = d3.select('#capability-details');
         if (detailsPanel.empty()) {
-            detailsPanel = d3.select(container)
-                .append('div')
+            detailsPanel = d3.select('body').append('div')
                 .attr('id', 'capability-details')
-                .style('position', 'absolute')
+                .style('position', 'fixed')
                 .style('right', '20px')
                 .style('top', '80px')
-                .style('width', '250px')
+                .style('width', '350px')
+                .style('max-height', '80vh')
                 .style('background', 'white')
                 .style('border-radius', '8px')
                 .style('box-shadow', '0 2px 10px rgba(0,0,0,0.1)')
                 .style('padding', '20px')
+                .style('overflow-y', 'auto')
                 .style('z-index', '1000');
         }
 
-        // Update details content with enhanced styling
-        detailsPanel.html(`
-            <div style="border-left: 4px solid ${layers[capability.layer].color}; padding-left: 10px;">
-                <h3 style="margin: 0; color: ${layers[capability.layer].color};">
-                    <i class="fa ${capability.icon}"></i> ${capability.name}
-                </h3>
-                <p style="color: #666; margin: 8px 0;">${capability.description || 'No description available'}</p>
-            </div>
-            
-            <div style="margin-top: 20px;">
-                <h4 style="margin: 0 0 10px 0; color: #444;">Layer</h4>
-                <p style="margin: 0; color: #666;">${layers[capability.layer].name}</p>
-            </div>
+        // Determine if this is a block-level or hexagon-level detail view
+        const isBlock = !parentCapability;
+        const content = [];
 
-            ${systems.length > 0 ? `
-                <div style="margin-top: 20px;">
-                    <h4 style="margin: 0 0 10px 0; color: #444;">Systems</h4>
-                    <div style="max-height: 200px; overflow-y: auto;">
-                        ${systems.map(sys => `
-                            <div style="margin-bottom: 10px; padding: 8px; background: #f5f5f5; border-radius: 4px;">
-                                <div style="font-weight: 500;">${sys.name}</div>
-                                <div style="font-size: 12px; color: #666;">${sys.description}</div>
-                                ${sys.integrations.length > 0 ? `
-                                    <div style="font-size: 12px; margin-top: 5px;">
-                                        <span style="color: #888;">Integrates with: </span>
-                                        ${sys.integrations.join(', ')}
+        if (isBlock) {
+            // Block-level details
+            const blockColor = layers[item.layer].color;
+            content.push(`
+                <div style="border-left: 4px solid ${blockColor}; padding-left: 10px; margin-bottom: 20px;">
+                    <h2 style="margin: 0; color: ${blockColor};">
+                        <i class="fa ${item.icon}"></i> ${item.name}
+                    </h2>
+                    ${item.description ? `<p style="color: #666; margin: 8px 0;">${item.description}</p>` : ''}
+                    <div style="color: #666; font-size: 12px;">${layers[item.layer].name}</div>
+                </div>
+                <h3 style="margin: 20px 0 10px 0;">Capabilities</h3>
+            `);
+
+            // List all children in this block
+            item.children.forEach(child => {
+                content.push(`
+                    <div style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                            <i class="fa ${child.icon || getDefaultIcon(child)}" style="margin-right: 10px; color: ${blockColor};"></i>
+                            <strong>${child.name}</strong>
+                        </div>
+                        ${child.description ? `<p style="margin: 5px 0; color: #666; font-size: 13px;">${child.description}</p>` : ''}
+                        ${child.type ? `<div style="font-size: 12px; color: #666;">Type: ${child.type}</div>` : ''}
+                    </div>
+                `);
+            });
+        } else {
+            // Hexagon-level details
+            const blockColor = layers[parentCapability.layer].color;
+            content.push(`
+                <div style="border-left: 4px solid ${blockColor}; padding-left: 10px; margin-bottom: 20px;">
+                    <div style="color: #666; font-size: 12px; margin-bottom: 5px;">${parentCapability.name}</div>
+                    <h2 style="margin: 0; color: ${blockColor};">
+                        <i class="fa ${item.icon || getDefaultIcon(item)}"></i> ${item.name}
+                    </h2>
+                    ${item.description ? `<p style="color: #666; margin: 8px 0;">${item.description}</p>` : ''}
+                    ${item.type ? `<div style="color: #666; font-size: 12px;">Type: ${item.type}</div>` : ''}
+                </div>
+            `);
+
+            // Systems information
+            if (item.systems && item.systems.length > 0) {
+                content.push('<h3 style="margin: 20px 0 10px 0;">Systems</h3>');
+                item.systems.forEach(system => {
+                    content.push(`
+                        <div style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                            <strong>${system.name}</strong>
+                            <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                                ${system.technology ? `<div>Technology: ${system.technology}</div>` : ''}
+                                ${system.status ? `<div>Status: <span style="color: ${system.status === 'Production' ? '#27AE60' : '#F39C12'}">${system.status}</span></div>` : ''}
+                                ${system.integrates ? `
+                                    <div style="margin-top: 5px;">
+                                        <div>Integrates with:</div>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 3px;">
+                                            ${system.integrates.map(int => `
+                                                <span style="background: #e9ecef; padding: 2px 8px; border-radius: 12px; font-size: 12px;">${int}</span>
+                                            `).join('')}
+                                        </div>
                                     </div>
                                 ` : ''}
                             </div>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
+                        </div>
+                    `);
+                });
+            }
 
-            ${relatedCaps.length > 0 ? `
-                <div style="margin-top: 20px;">
-                    <h4 style="margin: 0 0 10px 0; color: #444;">Related Capabilities</h4>
-                    <div style="max-height: 200px; overflow-y: auto;">
-                        ${relatedCaps.map(rel => `
-                            <div style="margin-bottom: 8px; display: flex; align-items: center;">
-                                <i class="fa fa-${rel.direction === 'outbound' ? 'arrow-right' : 'arrow-left'}" 
-                                   style="color: #999; margin-right: 8px;"></i>
-                                <span>${rel.name}</span>
+            // Data Models information
+            if (item.dataModels && item.dataModels.length > 0) {
+                content.push('<h3 style="margin: 20px 0 10px 0;">Data Models</h3>');
+                item.dataModels.forEach(model => {
+                    content.push(`
+                        <div style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                            <strong>${model.name}</strong>
+                            ${model.entities ? `
+                                <div style="margin-top: 5px;">
+                                    <div style="font-size: 13px; color: #666;">Entities:</div>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 3px;">
+                                        ${model.entities.map(entity => `
+                                            <span style="background: #e9ecef; padding: 2px 8px; border-radius: 12px; font-size: 12px;">${entity}</span>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${model.relationships ? `
+                                <div style="margin-top: 10px;">
+                                    <div style="font-size: 13px; color: #666;">Relationships:</div>
+                                    ${model.relationships.map(rel => `
+                                        <div style="font-size: 12px; margin-top: 3px;">
+                                            ${rel.from} <i class="fa fa-arrow-right" style="margin: 0 5px;"></i> ${rel.to} (${rel.type})
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `);
+                });
+            }
+
+            // Child capabilities if any
+            if (item.children && item.children.length > 0) {
+                content.push('<h3 style="margin: 20px 0 10px 0;">Child Capabilities</h3>');
+                item.children.forEach(child => {
+                    content.push(`
+                        <div style="margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                            <div style="display: flex; align-items: center;">
+                                <i class="fa ${child.icon || getDefaultIcon(child)}" style="margin-right: 10px; color: ${blockColor};"></i>
+                                <strong>${child.name}</strong>
                             </div>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
-        `);
+                            ${child.description ? `<p style="margin: 5px 0; color: #666; font-size: 13px;">${child.description}</p>` : ''}
+                        </div>
+                    `);
+                });
+            }
+        }
 
         // Add close button
-        detailsPanel.append('div')
-            .style('position', 'absolute')
-            .style('top', '10px')
-            .style('right', '10px')
-            .style('cursor', 'pointer')
-            .style('color', '#999')
-            .html('<i class="fa fa-times"></i>')
-            .on('click', () => detailsPanel.remove());
+        content.push(`
+            <div style="position: absolute; top: 10px; right: 10px; cursor: pointer; color: #999;"
+                 onclick="document.getElementById('capability-details').remove();">
+                <i class="fa fa-times"></i>
+            </div>
+        `);
 
-        // Show child capabilities if they exist
-        if (capability.children && capability.children.length > 0) {
-            showChildCapabilities(capability, hexGroup);
-        }
+        // Update panel content
+        detailsPanel.html(content.join(''));
     }
 
     // Function to visualize child capabilities
