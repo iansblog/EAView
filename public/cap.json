@@ -5,20 +5,28 @@
     "propertyManagement": {
       "name": "Property Management",
       "description": "End-to-end management of property assets",
+      "icon": "fa-building",
+      "color": "#4A90E2",
       "children": [
         {
           "name": "Property Marketing",
           "description": "Marketing and promotion of properties",
+          "icon": "fa-bullhorn",
+          "color": "#69A7E8",
           "systems": ["Knight Frank Website CMS", "Property Listings Service"]
         },
         {
           "name": "Property Transactions",
           "description": "Handling property sales and lettings",
+          "icon": "fa-handshake",
+          "color": "#69A7E8",
           "systems": ["Transaction Service", "CRM", "Financial Management"]
         },
         {
           "name": "Property Portfolio Management",
           "description": "Managing property portfolios for clients",
+          "icon": "fa-folder-open",
+          "color": "#69A7E8",
           "systems": ["Property Management System", "Analytics Platform"]
         }
       ]
@@ -26,15 +34,21 @@
     "clientManagement": {
       "name": "Client Management",
       "description": "Managing client relationships and services",
+      "icon": "fa-users",
+      "color": "#50C878",
       "children": [
         {
           "name": "Client Relationship Management",
           "description": "Managing client interactions and data",
+          "icon": "fa-user-tie",
+          "color": "#72D695",
           "systems": ["CRM", "Master Data Management"]
         },
         {
           "name": "Client Reporting",
           "description": "Generating and delivering client reports",
+          "icon": "fa-file-chart-line",
+          "color": "#72D695",
           "systems": ["Power BI Service", "Analytics Platform"]
         }
       ]
@@ -42,15 +56,21 @@
     "marketIntelligence": {
       "name": "Market Intelligence",
       "description": "Market analysis and insights",
+      "icon": "fa-chart-line",
+      "color": "#FF6B6B",
       "children": [
         {
           "name": "Market Analysis",
           "description": "Analysis of property market trends",
+          "icon": "fa-chart-bar",
+          "color": "#FF8A8A",
           "systems": ["Analytics Platform", "Power BI Service"]
         },
         {
           "name": "Competitor Analysis",
           "description": "Tracking and analyzing competitor activities",
+          "icon": "fa-binoculars",
+          "color": "#FF8A8A",
           "systems": ["Analytics Platform"]
         }
       ]
@@ -58,15 +78,21 @@
     "financialOperations": {
       "name": "Financial Operations",
       "description": "Managing financial aspects of the business",
+      "icon": "fa-coins",
+      "color": "#FFD700",
       "children": [
         {
           "name": "Transaction Processing",
           "description": "Processing financial transactions",
+          "icon": "fa-money-bill-transfer",
+          "color": "#FFE44D",
           "systems": ["Transaction Service", "Financial Management"]
         },
         {
           "name": "Financial Reporting",
           "description": "Generation of financial reports",
+          "icon": "fa-file-invoice-dollar",
+          "color": "#FFE44D",
           "systems": ["Financial Management", "Power BI Service"]
         }
       ]
