@@ -1,0 +1,100 @@
+#visualization {
+    width: 100%;
+    height: 800px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.card {
+    position: sticky;
+    top: 20px;
+}
+
+.node {
+    cursor: pointer;
+}
+
+.node:hover {
+    opacity: 0.8;
+}
+
+.link {
+    fill: none;
+    stroke: #999;
+    stroke-opacity: 0.6;
+}
+
+.link:hover {
+    stroke-opacity: 0.8;
+}
+
+.chord-tooltip, .sankey-tooltip, .cluster-tooltip, .network-tooltip {
+    position: absolute;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    pointer-events: none;
+    font-size: 12px;
+}
+
+.network-node text {
+    fill: #333;
+    font-weight: 500;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+.network-node circle {
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.parent-hex polygon,
+.child-hex polygon {
+    transition: all 0.3s ease;
+}
+
+.parent-hex:hover polygon {
+    filter: brightness(1.1);
+}
+
+.child-hex {
+    opacity: 0;
+    animation: fadeIn 0.3s ease-in forwards;
+}
+
+.child-hex:hover polygon {
+    filter: brightness(1.1);
+}
+
+.children-container {
+    pointer-events: all;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.capability-card {
+    padding: 20px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.capability-card h3 {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.capability-card i {
+    font-size: 1.2em;
+}

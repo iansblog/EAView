@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Knight Frank EA Overview</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Knight Frank EA Overview</a>            <div class="navbar-nav">
+                <a class="nav-link active" href="#" data-view="hexgrid">EA View</a>
+                <a class="nav-link" href="#" data-view="chord">Entity Relationships</a>
+                <a class="nav-link" href="#" data-view="network">Data Flow</a>
+                <a class="nav-link" href="#" data-view="cluster">System Clusters</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-9">
+                <div id="visualization"></div>
+            </div>
+            <div class="col-md-3">
+                <div id="details" class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Details</h5>
+                        <div id="detail-content">
+                            Select an item to see details
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    <script src="js/main.js"></script>
+    <script src="js/chord.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/cluster.js"></script>
+    <script src="js/hexgrid.js"></script>
+</body>
+</html>
