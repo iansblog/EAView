@@ -1,5 +1,5 @@
 // Main application logic
-let currentView = 'chord';
+let currentView = 'hexgrid';
 let capData = null;
 
 // Load data

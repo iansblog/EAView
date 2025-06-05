@@ -153,18 +153,15 @@ function renderCapabilityHexGrid(container, data) {
                 .attr("points", hexPoints(hexRadius))
                 .attr("fill", d3.rgb(layers[cap.layer].color).brighter(0.7))
                 .attr("stroke", layers[cap.layer].color)
-                .attr("stroke-width", 2)
-                .on("mouseover", function() {
+                .attr("stroke-width", 2)                .on("mouseover", function() {
                     d3.select(this)
                         .attr("stroke-width", 3)
                         .style("filter", "drop-shadow(2px 2px 3px rgba(0,0,0,0.2))");
-                    showTooltip(child, d3.event);
                 })
                 .on("mouseout", function() {
                     d3.select(this)
                         .attr("stroke-width", 2)
                         .style("filter", "none");
-                    hideTooltip();
                 })
                 .on("click", (event) => {
                     event.stopPropagation(); // Prevent triggering parent block's click
@@ -275,27 +272,10 @@ function renderCapabilityHexGrid(container, data) {
             'fa-concierge-bell': '\uf562'
         };
         return iconMap[iconClass] || '\uf013'; // Default to gear icon
-    }
-
-    // Enhanced capability details display
+    }    // Enhanced capability details display
     function showCapabilityDetails(item, parentCapability) {
-        // Create or get details panel
-        let detailsPanel = d3.select('#capability-details');
-        if (detailsPanel.empty()) {
-            detailsPanel = d3.select('body').append('div')
-                .attr('id', 'capability-details')
-                .style('position', 'fixed')
-                .style('right', '20px')
-                .style('top', '80px')
-                .style('width', '350px')
-                .style('max-height', '80vh')
-                .style('background', 'white')
-                .style('border-radius', '8px')
-                .style('box-shadow', '0 2px 10px rgba(0,0,0,0.1)')
-                .style('padding', '20px')
-                .style('overflow-y', 'auto')
-                .style('z-index', '1000');
-        }
+        // Get the existing details panel
+        const detailsPanel = d3.select('#detail-content');
 
         // Determine if this is a block-level or hexagon-level detail view
         const isBlock = !parentCapability;
@@ -415,15 +395,7 @@ function renderCapabilityHexGrid(container, data) {
                     `);
                 });
             }
-        }
-
-        // Add close button
-        content.push(`
-            <div style="position: absolute; top: 10px; right: 10px; cursor: pointer; color: #999;"
-                 onclick="document.getElementById('capability-details').remove();">
-                <i class="fa fa-times"></i>
-            </div>
-        `);
+        }        // No need for close button as we're using the permanent details panel
 
         // Update panel content
         detailsPanel.html(content.join(''));
