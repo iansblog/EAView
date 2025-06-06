@@ -20,8 +20,89 @@ footer {
 }
 
 .card {
+    position: relative; /* Changed from sticky to relative for content cards */
+}
+
+/* Only the main details panel should be sticky */
+#details.card {
     position: sticky;
     top: 20px;
+}
+
+/* Details panel improvements */
+#details {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px); /* Full viewport height minus margins */
+    display: flex;
+    flex-direction: column;
+    z-index: 10; /* Ensure details panel stays above other content */
+}
+
+#details .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+#details .card-title {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 20; /* Title stays above scrollable content */
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0;
+}
+
+#detail-content {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 5px; /* Space for scrollbar */
+    scroll-behavior: smooth;
+    max-height: calc(100vh - 160px); /* Adjust height to account for header and title */
+    position: relative;
+    z-index: 5; /* Content below title but above other elements */
+}
+
+/* Ensure content within detail panel is properly spaced */
+#detail-content h3 {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+/* Create space at the bottom for scrolling */
+#detail-content:after {
+    content: "";
+    display: block;
+    height: 20px;
+}
+
+/* Ensure cards within details panel don't overflow */
+#detail-content .card {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 15px;
+    break-inside: avoid; /* Prevent cards from breaking across scroll boundaries */
+}
+
+/* Ensure proper spacing for data model and system cards */
+#detail-content .card .card-body {
+    position: relative;
+    overflow: visible;
+}
+
+/* Make sure tables within cards are properly contained */
+#detail-content .table {
+    margin-bottom: 0;
+}
+
+/* Ensure accordions work properly within the scrollable area */
+#detail-content .accordion {
+    position: relative;
+    z-index: 1;
 }
 
 /* Home page card styles */
