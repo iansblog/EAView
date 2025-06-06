@@ -1,0 +1,78 @@
+<!-- Entity Relationships Page -->
+<div include-html="includes/header.html"></div>
+<div include-html="includes/navigation.html"></div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>Entity Relationships</h1>
+            <p class="lead">Visualize relationships between key business entities</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div id="visualization"></div>
+        </div>
+        <div class="col-md-3">
+            <div id="details" class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Details</h5>
+                    <div id="detail-content">
+                        Select an item to see details
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/chord.js"></script>
+
+<script>
+    // Initialize the chord diagram view after includes are loaded
+    document.addEventListener('includesLoaded', function() {
+        // Load data and render chord diagram
+        async function loadAndRenderChordDiagram() {
+            try {
+                // Add a small delay to ensure DOM is fully ready
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                // Add cache-busting parameter to prevent browser caching issues
+                const timestamp = new Date().getTime();
+                const response = await fetch(`cap.json?_=${timestamp}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                // Normalize data to ensure consistent structure
+                const normalizedData = normalizeCapabilityData(data);
+                const viz = document.getElementById('visualization');
+                renderChordDiagram(viz, normalizedData);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('visualization').innerHTML = 
+                    '<div class="alert alert-danger">Error loading data: ' + error.message + '</div>';
+            }
+        }
+        
+        loadAndRenderChordDiagram();
+    });
+    
+    // Fallback initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        // This will be a backup if the includesLoaded event doesn't fire
+        setTimeout(function() {
+            // Dispatch includesLoaded event if it hasn't happened yet
+            if (!window.includesLoadedDispatched) {
+                document.dispatchEvent(new Event('includesLoaded'));
+            }
+        }, 500);
+    });
+</script>
+</script>
+
+<div include-html="includes/footer.html"></div>

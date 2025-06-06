@@ -1,52 +1,4 @@
-// Main application logic
-let currentView = 'hexgrid';
-let capData = null;
-
-// Load data
-async function loadData() {
-    try {
-        const response = await fetch('cap.json');
-        capData = await response.json();
-        renderCurrentView();
-    } catch (error) {
-        console.error('Error loading data:', error);
-    }
-}
-
-// Handle navigation
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        e.target.classList.add('active');
-        currentView = e.target.dataset.view;
-        renderCurrentView();
-    });
-});
-
-// Render the current view
-function renderCurrentView() {
-    if (!capData) return;
-    
-    const viz = document.getElementById('visualization');
-    viz.innerHTML = '';    switch(currentView) {
-        case 'hexgrid':
-            renderCapabilityHexGrid(viz, capData);
-            break;
-        case 'capabilities':
-            renderCapabilitiesView(viz, capData);
-            break;
-        case 'chord':
-            renderChordDiagram(viz, capData);
-            break;
-        case 'network':
-            renderNetworkGraph(viz, capData);
-            break;
-        case 'cluster':
-            renderClusterDiagram(viz, capData);
-            break;
-    }
-}
+// Main application logic - Shared utility functions for all views
 
 // Update details panel
 function updateDetails(data) {
@@ -76,10 +28,34 @@ function updateDetails(data) {
         });
         html += '</ul>';
     }
-    
-    html += '</div>';
+      html += '</div>';
     detailContent.innerHTML = html;
 }
 
-// Initialize
-loadData();
+// Helper function to normalize data structure for compatibility across views
+function normalizeCapabilityData(data) {
+    // Add debug logging
+    console.log('Normalizing data structure:', data);
+    
+    // Ensure both capabilities and businessCapabilities are available
+    if (data.businessCapabilities && !data.capabilities) {
+        data.capabilities = data.businessCapabilities;
+        console.log('Added capabilities property');
+    } else if (data.capabilities && !data.businessCapabilities) {
+        data.businessCapabilities = data.capabilities;
+        console.log('Added businessCapabilities property');
+    }
+    
+    // If neither exists, create empty objects
+    if (!data.capabilities) {
+        data.capabilities = {};
+        console.log('Created empty capabilities object');
+    }
+    
+    if (!data.businessCapabilities) {
+        data.businessCapabilities = {};
+        console.log('Created empty businessCapabilities object');
+    }
+    
+    return data;
+}
