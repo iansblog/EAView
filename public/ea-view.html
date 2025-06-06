@@ -42,10 +42,9 @@
             try {
                 // Add a small delay to ensure DOM is fully ready
                 await new Promise(resolve => setTimeout(resolve, 100));
-                
-                // Add cache-busting parameter to prevent browser caching issues
+                  // Add cache-busting parameter to prevent browser caching issues
                 const timestamp = new Date().getTime();
-                const response = await fetch(`cap.json?_=${timestamp}`);
+                const response = await fetch(`data/be.json?_=${timestamp}`);
                 
                 if (!response.ok) {
                     throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);

@@ -281,6 +281,24 @@ footer {
     overflow-y: auto;
 }
 
+/* Data Flow Layout Controls */
+.data-flow-controls {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.data-flow-controls .btn {
+    transition: all 0.3s ease;
+}
+
+.data-flow-controls .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 /* Network graph enhancements */
 .network-node {
     cursor: pointer;
@@ -399,4 +417,23 @@ footer {
 
 .cluster-node:hover {
     opacity: 0.8;
+}
+
+/* Position saving indicator */
+.position-saving {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.position-saving.show {
+    opacity: 1;
 }

@@ -78,7 +78,7 @@
                 
                 // Add cache-busting parameter to prevent browser caching issues
                 const timestamp = new Date().getTime();
-                const response = await fetch(`cap_updated.json?_=${timestamp}`);
+                const response = await fetch(`data/be.json?_=${timestamp}`);
                 
                 if (!response.ok) {
                     throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);
