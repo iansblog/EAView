@@ -14,8 +14,7 @@
           "name": "Property Marketing",
           "description": "Marketing and promotion of properties",
           "icon": "fa-bullhorn",
-          "color": "#69A7E8",
-          "systems": [
+          "color": "#69A7E8",          "systems": [
             {
               "name": "Knight Frank Website CMS",
               "description": "Content management system for property listings and marketing content",
@@ -95,8 +94,7 @@
               "dataClassification": "Sensitive"
             }
           ]
-        },
-        {
+        },        {
           "name": "Property Portfolio Management",
           "description": "Managing property portfolios for clients",
           "icon": "fa-folder-open",
@@ -133,8 +131,7 @@
           ]
         }
       ]
-    },
-    "clientManagement": {
+    },    "clientManagement": {
       "name": "Client Management",
       "description": "Managing client relationships and services",
       "icon": "fa-users",
@@ -213,8 +210,7 @@
           ]
         }
       ]
-    },
-    "marketIntelligence": {
+    },    "marketIntelligence": {
       "name": "Market Intelligence",
       "description": "Market analysis and insights",
       "icon": "fa-chart-line",
@@ -279,8 +275,7 @@
           ]
         }
       ]
-    },
-    "financialOperations": {
+    },    "financialOperations": {
       "name": "Financial Operations",
       "description": "Managing financial aspects of the business",
       "icon": "fa-coins",
@@ -360,111 +355,56 @@
         }
       ]
     }
-  },
-  "sharedEntities": {
+  },  "sharedEntities": {
     "Property": {
       "name": "Property",
       "description": "Core property information entity",
       "icon": "fa-building",
       "color": "#4A90E2",
-      "attributes": [
-        "id",
-        "address",
-        "type",
-        "price",
-        "status"
-      ],
-      "relationships": [
-        "Location",
-        "Agent",
-        "Images",
-        "Features"
-      ]
+      "attributes": ["id", "address", "type", "price", "status"],
+      "relationships": ["Location", "Agent", "Images", "Features"]
     },
     "Person": {
       "name": "Person",
       "description": "Individual contact information",
       "icon": "fa-user",
       "color": "#50C878",
-      "attributes": [
-        "id",
-        "name",
-        "email",
-        "phone"
-      ],
-      "relationships": [
-        "Company",
-        "Role"
-      ]
+      "attributes": ["id", "name", "email", "phone"],
+      "relationships": ["Company", "Role"]
     },
     "Company": {
       "name": "Company",
       "description": "Organization information",
       "icon": "fa-building-user",
       "color": "#FF6B6B",
-      "attributes": [
-        "id",
-        "name",
-        "type",
-        "status"
-      ],
-      "relationships": [
-        "Person",
-        "Location"
-      ]
+      "attributes": ["id", "name", "type", "status"],
+      "relationships": ["Person", "Location"]
     },
     "Location": {
       "name": "Location",
       "description": "Geographic location information",
       "icon": "fa-map-marker-alt",
       "color": "#FFD700",
-      "attributes": [
-        "id",
-        "address",
-        "city",
-        "country",
-        "coordinates"
-      ],
-      "relationships": [
-        "Property"
-      ]
+      "attributes": ["id", "address", "city", "country", "coordinates"],
+      "relationships": ["Property"]
     },
     "Transaction": {
       "name": "Transaction",
       "description": "Property transaction details",
       "icon": "fa-exchange-alt",
       "color": "#9B59B6",
-      "attributes": [
-        "id",
-        "type",
-        "date",
-        "value",
-        "status"
-      ],
-      "relationships": [
-        "Property",
-        "Client",
-        "Agent"
-      ]
+      "attributes": ["id", "type", "date", "value", "status"],
+      "relationships": ["Property", "Client", "Agent"]
     },
     "Agent": {
       "name": "Agent",
       "description": "Knight Frank agent information",
       "icon": "fa-user-tie",
       "color": "#3498DB",
-      "attributes": [
-        "id",
-        "name",
-        "specialization"
-      ],
-      "relationships": [
-        "Person",
-        "Property",
-        "Transaction"
-      ]
+      "attributes": ["id", "name", "specialization"],
+      "relationships": ["Person", "Property", "Transaction"]
     }
-  },
-  "capabilities": {
+  },  "capabilities": {
     "userInterfaces": {
       "name": "User Interfaces",
       "description": "User-facing application interfaces",
@@ -491,12 +431,7 @@
               "deploymentType": "Cloud",
               "annualCost": "$350,000",
               "dataClassification": "Public",
-              "integrates": [
-                "Property Listings Service",
-                "Agent Directory",
-                "CRM",
-                "Analytics Platform"
-              ]
+              "integrates": ["Property Listings Service", "Agent Directory", "CRM", "Analytics Platform"]
             }
           ],
           "dataModels": [
@@ -505,12 +440,7 @@
               "description": "Data model for property listings",
               "icon": "fa-list",
               "color": "#69A7E8",
-              "entities": [
-                "Property",
-                "Location",
-                "Agent",
-                "Images"
-              ],
+              "entities": ["Property", "Location", "Agent", "Images"],
               "relationships": [
                 {
                   "from": "Property",
@@ -525,8 +455,7 @@
               ]
             }
           ]
-        },
-        {
+        },        {
           "name": "Office Tools",
           "description": "Internal productivity tools",
           "icon": "fa-toolbox",
@@ -600,8 +529,7 @@
             }
           ],
           "type": "interface"
-        },
-        {
+        },        {
           "name": "Application Portals",
           "description": "Business application portals including Dynamics 365",
           "icon": "fa-window-restore",
@@ -621,12 +549,7 @@
               "deploymentType": "SaaS",
               "annualCost": "$320,000",
               "dataClassification": "Internal",
-              "integrates": [
-                "CRM",
-                "Master Data Management",
-                "Transaction Service",
-                "Financial Management"
-              ]
+              "integrates": ["CRM", "Master Data Management", "Transaction Service", "Financial Management"]
             }
           ]
         },
@@ -650,12 +573,7 @@
               "deploymentType": "Cloud",
               "annualCost": "$280,000",
               "dataClassification": "Internal",
-              "integrates": [
-                "Property Listings Service",
-                "Transaction Service",
-                "CRM",
-                "Analytics Platform"
-              ]
+              "integrates": ["Property Listings Service", "Transaction Service", "CRM", "Analytics Platform"]
             }
           ]
         },
@@ -679,10 +597,7 @@
               "deploymentType": "SaaS",
               "annualCost": "$175,000",
               "dataClassification": "Internal",
-              "integrates": [
-                "Data Platform",
-                "Transaction Service"
-              ]
+              "integrates": ["Data Platform", "Transaction Service"]
             }
           ],
           "dataModels": [
@@ -691,12 +606,7 @@
               "description": "Data model for analytics",
               "icon": "fa-table",
               "color": "#69A7E8",
-              "entities": [
-                "Transaction",
-                "Property",
-                "Agent",
-                "Company"
-              ],
+              "entities": ["Transaction", "Property", "Agent", "Company"],
               "relationships": [
                 {
                   "from": "Transaction",
@@ -801,22 +711,13 @@
                   "name": "Master Data Management",
                   "technology": "Azure Data Factory",
                   "status": "Production",
-                  "integrates": [
-                    "CRM",
-                    "Property Management System",
-                    "Financial Management",
-                    "Analytics Platform"
-                  ]
+                  "integrates": ["CRM", "Property Management System", "Financial Management", "Analytics Platform"]
                 }
               ],
               "dataModels": [
                 {
                   "name": "Contact Schema",
-                  "entities": [
-                    "Person",
-                    "Company",
-                    "Location"
-                  ],
+                  "entities": ["Person", "Company", "Location"],
                   "relationships": [
                     {
                       "from": "Person",
@@ -840,23 +741,13 @@
                   "name": "Transaction Service",
                   "technology": "Azure Functions",
                   "status": "Production",
-                  "integrates": [
-                    "CRM",
-                    "Financial Management",
-                    "Analytics Platform",
-                    "Property Management System"
-                  ]
+                  "integrates": ["CRM", "Financial Management", "Analytics Platform", "Property Management System"]
                 }
               ],
               "dataModels": [
                 {
                   "name": "Transaction Schema",
-                  "entities": [
-                    "Transaction",
-                    "Property",
-                    "Company",
-                    "Agent"
-                  ],
+                  "entities": ["Transaction", "Property", "Company", "Agent"],
                   "relationships": [
                     {
                       "from": "Transaction",
@@ -880,32 +771,19 @@
                   "name": "Property Management System",
                   "technology": "Azure App Service",
                   "status": "Production",
-                  "integrates": [
-                    "Property Listings Service",
-                    "Analytics Platform",
-                    "CRM"
-                  ]
+                  "integrates": ["Property Listings Service", "Analytics Platform", "CRM"]
                 },
                 {
                   "name": "Property Listings Service",
                   "technology": "Azure Functions",
                   "status": "Production",
-                  "integrates": [
-                    "Knight Frank Website CMS",
-                    "CRM",
-                    "Analytics Platform"
-                  ]
+                  "integrates": ["Knight Frank Website CMS", "CRM", "Analytics Platform"]
                 }
               ],
               "dataModels": [
                 {
                   "name": "Property Schema",
-                  "entities": [
-                    "Property",
-                    "Location",
-                    "Features",
-                    "History"
-                  ]
+                  "entities": ["Property", "Location", "Features", "History"]
                 }
               ]
             },
@@ -931,11 +809,7 @@
                   "name": "Analytics Platform",
                   "technology": "Azure Synapse",
                   "status": "Production",
-                  "integrates": [
-                    "Power BI Service",
-                    "Master Data Management",
-                    "Transaction Service"
-                  ]
+                  "integrates": ["Power BI Service", "Master Data Management", "Transaction Service"]
                 }
               ]
             }
@@ -955,12 +829,7 @@
               "name": "CRM",
               "technology": "Microsoft Dynamics 365",
               "status": "Production",
-              "integrates": [
-                "Master Data Management",
-                "Analytics Platform",
-                "Transaction Service",
-                "Property Management System"
-              ]
+              "integrates": ["Master Data Management", "Analytics Platform", "Transaction Service", "Property Management System"]
             }
           ],
           "children": [
@@ -1053,152 +922,6 @@
         },
         {
           "name": "Reports"
-        }
-      ]
-    },
-    "financePlatform": {
-      "name": "Finance Platform",
-      "description": "Financial and accounting systems",
-      "icon": "fa-pound-sign",
-      "color": "#FFD700",
-      "children": [
-        {
-          "name": "ERP and Budgeting",
-          "description": "Financial core systems",
-          "systems": [
-            {
-              "name": "SAP",
-              "description": "ERP system for financials, procurement, and asset management.",
-              "technology": "Internal Hosting",
-              "status": "Production",
-              "country": "GB",
-              "deploymentType": "Internal",
-              "criticality": "High",
-              "owner": "Finance",
-              "supportLevel": "Gold",
-              "annualCost": "$750,000",
-              "dataClassification": "Confidential"
-            },
-            {
-              "name": "Invoice Automation",
-              "description": "Tool for automating invoice capture, approvals, and ERP integration (e.g., Basware, Medius).",
-              "technology": "SaaS",
-              "status": "Proposed",
-              "country": "GB",
-              "deploymentType": "Cloud",
-              "criticality": "Medium",
-              "owner": "Finance",
-              "supportLevel": "TBD",
-              "annualCost": "TBD",
-              "dataClassification": "Internal"
-            },
-            {
-              "name": "Budgeting & Forecasting Tool",
-              "description": "System for financial planning, scenario modelling, and forecasting.",
-              "technology": "SaaS/Internal",
-              "status": "Proposed",
-              "country": "GB",
-              "deploymentType": "Hybrid",
-              "criticality": "Medium",
-              "owner": "Finance",
-              "supportLevel": "TBD",
-              "annualCost": "TBD",
-              "dataClassification": "Internal"
-            }
-          ]
-        }
-      ]
-    },
-    "hrPlatform": {
-      "name": "HR Platform",
-      "description": "Human Resources systems",
-      "icon": "fa-users",
-      "color": "#50C878",
-      "children": [
-        {
-          "name": "HCM and Payroll",
-          "description": "HR core systems",
-          "systems": [
-            {
-              "name": "Workday",
-              "description": "Cloud-based HCM for HR, recruitment, and performance.",
-              "technology": "SaaS",
-              "status": "Production",
-              "country": "GB",
-              "deploymentType": "Cloud",
-              "criticality": "High",
-              "owner": "HR",
-              "supportLevel": "Gold",
-              "annualCost": "$300,000",
-              "dataClassification": "Confidential"
-            },
-            {
-              "name": "Payroll System",
-              "description": "Platform for payroll calculation and tax management (e.g., ADP, Sage).",
-              "technology": "SaaS",
-              "status": "Proposed",
-              "country": "GB",
-              "deploymentType": "Cloud",
-              "criticality": "Medium",
-              "owner": "HR/Finance",
-              "supportLevel": "TBD",
-              "annualCost": "TBD",
-              "dataClassification": "Confidential"
-            }
-          ]
-        }
-      ]
-    },
-    "crmCmsPlatform": {
-      "name": "CRM / CMS Platform",
-      "description": "Customer and content management",
-      "icon": "fa-bullhorn",
-      "color": "#9B59B6",
-      "children": [
-        {
-          "name": "CRM and Engagement",
-          "description": "CRM and marketing tools",
-          "systems": [
-            {
-              "name": "Dynamics 365",
-              "description": "CRM for managing customer interactions, service requests, and sales.",
-              "technology": "SaaS",
-              "status": "Production",
-              "country": "GB",
-              "deploymentType": "Cloud",
-              "criticality": "High",
-              "owner": "Sales & Marketing",
-              "supportLevel": "Gold",
-              "annualCost": "$400,000",
-              "dataClassification": "Confidential"
-            },
-            {
-              "name": "Customer Engagement Platform",
-              "description": "Marketing and communication tools (e.g., Dynamics Marketing, Salesforce).",
-              "technology": "SaaS",
-              "status": "Proposed",
-              "country": "GB",
-              "deploymentType": "Cloud",
-              "criticality": "Medium",
-              "owner": "Marketing",
-              "supportLevel": "TBD",
-              "annualCost": "TBD",
-              "dataClassification": "Internal"
-            },
-            {
-              "name": "Document Management System",
-              "description": "Tool for managing documents, version control, and collaboration (e.g., SharePoint, M-Files).",
-              "technology": "SaaS/Internal",
-              "status": "Proposed",
-              "country": "GB",
-              "deploymentType": "Hybrid",
-              "criticality": "Medium",
-              "owner": "IT",
-              "supportLevel": "TBD",
-              "annualCost": "TBD",
-              "dataClassification": "Internal"
-            }
-          ]
         }
       ]
     }
