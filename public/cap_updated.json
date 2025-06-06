@@ -14,7 +14,8 @@
           "name": "Property Marketing",
           "description": "Marketing and promotion of properties",
           "icon": "fa-bullhorn",
-          "color": "#69A7E8",          "systems": [
+          "color": "#69A7E8",
+          "systems": [
             {
               "name": "Knight Frank Website CMS",
               "description": "Content management system for property listings and marketing content",
@@ -94,7 +95,8 @@
               "dataClassification": "Sensitive"
             }
           ]
-        },        {
+        },
+        {
           "name": "Property Portfolio Management",
           "description": "Managing property portfolios for clients",
           "icon": "fa-folder-open",
@@ -131,7 +133,8 @@
           ]
         }
       ]
-    },    "clientManagement": {
+    },
+    "clientManagement": {
       "name": "Client Management",
       "description": "Managing client relationships and services",
       "icon": "fa-users",
@@ -210,7 +213,8 @@
           ]
         }
       ]
-    },    "marketIntelligence": {
+    },
+    "marketIntelligence": {
       "name": "Market Intelligence",
       "description": "Market analysis and insights",
       "icon": "fa-chart-line",
@@ -275,7 +279,8 @@
           ]
         }
       ]
-    },    "financialOperations": {
+    },
+    "financialOperations": {
       "name": "Financial Operations",
       "description": "Managing financial aspects of the business",
       "icon": "fa-coins",
@@ -355,7 +360,8 @@
         }
       ]
     }
-  },  "sharedEntities": {
+  },
+  "sharedEntities": {
     "Property": {
       "name": "Property",
       "description": "Core property information entity",
@@ -404,7 +410,8 @@
       "attributes": ["id", "name", "specialization"],
       "relationships": ["Person", "Property", "Transaction"]
     }
-  },  "capabilities": {
+  },
+  "capabilities": {
     "userInterfaces": {
       "name": "User Interfaces",
       "description": "User-facing application interfaces",
@@ -455,7 +462,8 @@
               ]
             }
           ]
-        },        {
+        },
+        {
           "name": "Office Tools",
           "description": "Internal productivity tools",
           "icon": "fa-toolbox",
@@ -529,7 +537,8 @@
             }
           ],
           "type": "interface"
-        },        {
+        },
+        {
           "name": "Application Portals",
           "description": "Business application portals including Dynamics 365",
           "icon": "fa-window-restore",
@@ -621,307 +630,6 @@
               ]
             }
           ]
-        }
-      ]
-    },
-    "systemOfSystems": {
-      "name": "System of Systems",
-      "icon": "fa-cubes",
-      "color": "#50C878",
-      "children": [
-        {
-          "name": "Hub",
-          "description": "re-architected",
-          "children": [
-            {
-              "name": "Sales",
-              "description": "inc New Homes"
-            },
-            {
-              "name": "Lettings"
-            }
-          ],
-          "type": "b2c"
-        },
-        {
-          "name": "B2B Systems",
-          "children": [
-            {
-              "name": "Acquisitions/Disposals"
-            },
-            {
-              "name": "Capital Markets"
-            },
-            {
-              "name": "Lease Advisory"
-            },
-            {
-              "name": "Occupier Services"
-            },
-            {
-              "name": "Consultancy"
-            },
-            {
-              "name": "Private Wealth"
-            }
-          ],
-          "type": "b2b"
-        },
-        {
-          "name": "COTS",
-          "description": "Components Off The Shelf",
-          "children": [
-            {
-              "name": "Lettings Management"
-            },
-            {
-              "name": "PAM"
-            },
-            {
-              "name": "Compliance"
-            },
-            {
-              "name": "Agency Transactions"
-            },
-            {
-              "name": "Valuations"
-            },
-            {
-              "name": "Marketing Systems"
-            }
-          ],
-          "type": "specialist"
-        }
-      ]
-    },
-    "integration": {
-      "name": "Integration",
-      "icon": "fa-network-wired",
-      "color": "#FF6B6B",
-      "children": [
-        {
-          "name": "Data",
-          "icon": "fa-database",
-          "children": [
-            {
-              "name": "Contacts & Companies",
-              "icon": "fa-address-book",
-              "systems": [
-                {
-                  "name": "Master Data Management",
-                  "technology": "Azure Data Factory",
-                  "status": "Production",
-                  "integrates": ["CRM", "Property Management System", "Financial Management", "Analytics Platform"]
-                }
-              ],
-              "dataModels": [
-                {
-                  "name": "Contact Schema",
-                  "entities": ["Person", "Company", "Location"],
-                  "relationships": [
-                    {
-                      "from": "Person",
-                      "to": "Company",
-                      "type": "employedBy"
-                    },
-                    {
-                      "from": "Company",
-                      "to": "Location",
-                      "type": "locatedAt"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "Transactions",
-              "icon": "fa-exchange-alt",
-              "systems": [
-                {
-                  "name": "Transaction Service",
-                  "technology": "Azure Functions",
-                  "status": "Production",
-                  "integrates": ["CRM", "Financial Management", "Analytics Platform", "Property Management System"]
-                }
-              ],
-              "dataModels": [
-                {
-                  "name": "Transaction Schema",
-                  "entities": ["Transaction", "Property", "Company", "Agent"],
-                  "relationships": [
-                    {
-                      "from": "Transaction",
-                      "to": "Property",
-                      "type": "involves"
-                    },
-                    {
-                      "from": "Transaction",
-                      "to": "Company",
-                      "type": "client"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "Properties",
-              "icon": "fa-building",
-              "systems": [
-                {
-                  "name": "Property Management System",
-                  "technology": "Azure App Service",
-                  "status": "Production",
-                  "integrates": ["Property Listings Service", "Analytics Platform", "CRM"]
-                },
-                {
-                  "name": "Property Listings Service",
-                  "technology": "Azure Functions",
-                  "status": "Production",
-                  "integrates": ["Knight Frank Website CMS", "CRM", "Analytics Platform"]
-                }
-              ],
-              "dataModels": [
-                {
-                  "name": "Property Schema",
-                  "entities": ["Property", "Location", "Features", "History"]
-                }
-              ]
-            },
-            {
-              "name": "People & Offices",
-              "icon": "fa-users"
-            }
-          ]
-        },
-        {
-          "name": "People Platform",
-          "icon": "fa-user-circle"
-        },
-        {
-          "name": "Data Platform",
-          "icon": "fa-layer-group",
-          "children": [
-            {
-              "name": "Analytics",
-              "icon": "fa-chart-bar",
-              "systems": [
-                {
-                  "name": "Analytics Platform",
-                  "technology": "Azure Synapse",
-                  "status": "Production",
-                  "integrates": ["Power BI Service", "Master Data Management", "Transaction Service"]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "crm": {
-      "name": "CRM",
-      "icon": "fa-users",
-      "color": "#9B59B6",
-      "children": [
-        {
-          "name": "Marketing",
-          "systems": [
-            {
-              "name": "CRM",
-              "technology": "Microsoft Dynamics 365",
-              "status": "Production",
-              "integrates": ["Master Data Management", "Analytics Platform", "Transaction Service", "Property Management System"]
-            }
-          ],
-          "children": [
-            {
-              "name": "Campaigns"
-            },
-            {
-              "name": "Segmentation"
-            }
-          ]
-        },
-        {
-          "name": "Sales",
-          "children": [
-            {
-              "name": "Commercial"
-            },
-            {
-              "name": "Residential"
-            },
-            {
-              "name": "Customer Surveys"
-            },
-            {
-              "name": "Insights"
-            }
-          ]
-        }
-      ]
-    },
-    "thirdPartyDataFeeds": {
-      "name": "3rd Party Data Feeds",
-      "icon": "fa-plug",
-      "color": "#E67E22",
-      "children": [
-        {
-          "name": "Leads/Contacts"
-        },
-        {
-          "name": "Companies"
-        },
-        {
-          "name": "Transactions"
-        },
-        {
-          "name": "Properties"
-        },
-        {
-          "name": "Websites",
-          "description": "e.g. Rightmove"
-        },
-        {
-          "name": "Market Intelligence"
-        }
-      ]
-    },
-    "financialManagement": {
-      "name": "Financial Management",
-      "description": "e.g. SAP",
-      "icon": "fa-money-bill",
-      "color": "#FFD700",
-      "children": [
-        {
-          "name": "Accounts Management"
-        },
-        {
-          "name": "Ledger Management"
-        },
-        {
-          "name": "Invoice Management"
-        },
-        {
-          "name": "Company Management"
-        },
-        {
-          "name": "Financial Reconciliation"
-        },
-        {
-          "name": "Financial Reporting"
-        }
-      ]
-    },
-    "reporting": {
-      "name": "Reporting Platform",
-      "icon": "fa-chart-bar",
-      "color": "#3498DB",
-      "children": [
-        {
-          "name": "Dashboards"
-        },
-        {
-          "name": "Reports"
         }
       ]
     }
