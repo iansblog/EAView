@@ -99,17 +99,92 @@ function renderChordDiagram(container, data) {
     function handleMouseOut(event, d) {
         d3.select(this).attr("opacity", 1);
     }
-    
-    function handleClick(event, d) {
+      function handleClick(event, d) {
         const entityName = entities[d.index];
         const entityData = data.sharedEntities[entityName];
-        updateDetails({
+          // Find systems and capabilities that use this entity
+        const usingSystems = [];
+        const usingCapabilities = [];
+        
+        // Search through all capabilities and their children
+        function searchForEntity(obj, path = []) {
+            if (obj.systems) {
+                obj.systems.forEach(system => {
+                    // Check if system integrates with other systems that might use this entity
+                    if (system.integrates && system.integrates.some(integration => 
+                        integration.toLowerCase().includes(entityName.toLowerCase()))) {
+                        usingSystems.push({
+                            name: system.name,
+                            path: path.join(' > '),
+                            technology: system.technology,
+                            status: system.status
+                        });
+                    }
+                    
+                    // Check if system name or description mentions the entity
+                    if (system.name.toLowerCase().includes(entityName.toLowerCase()) ||
+                        (system.description && system.description.toLowerCase().includes(entityName.toLowerCase()))) {
+                        usingSystems.push({
+                            name: system.name,
+                            path: path.join(' > '),
+                            technology: system.technology,
+                            status: system.status
+                        });
+                    }
+                });
+            }
+            
+            if (obj.dataModels) {
+                obj.dataModels.forEach(model => {
+                    if (model.entities && model.entities.includes(entityName)) {
+                        usingSystems.push({
+                            name: model.name + ' (Data Model)',
+                            path: path.join(' > '),
+                            technology: 'Data Model',
+                            status: 'Active'
+                        });
+                    }
+                });
+            }
+            
+            if (obj.children) {
+                obj.children.forEach(child => {
+                    searchForEntity(child, [...path, child.name]);
+                });
+            }
+        }
+        
+        // Search through business capabilities
+        if (data.businessCapabilities) {
+            Object.entries(data.businessCapabilities).forEach(([key, capability]) => {
+                usingCapabilities.push(capability.name);
+                searchForEntity(capability, [capability.name]);
+            });
+        }
+        
+        // Search through EA capabilities
+        if (data.capabilities) {
+            Object.entries(data.capabilities).forEach(([key, capability]) => {
+                if (!usingCapabilities.includes(capability.name)) {
+                    usingCapabilities.push(capability.name);
+                }
+                searchForEntity(capability, [capability.name]);
+            });
+        }
+        
+        updateEntityDetails({
             name: entityName,
+            description: entityData.description,
+            icon: entityData.icon,
+            color: entityData.color,
+            attributes: entityData.attributes,
             relationships: entityData.relationships.map(rel => ({
                 from: entityName,
                 to: rel,
                 type: "relates to"
-            }))
+            })),
+            usingSystems: usingSystems,
+            usingCapabilities: usingCapabilities.filter(cap => cap) // Remove undefined values
         });
     }
 }

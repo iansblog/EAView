@@ -8,16 +8,54 @@
             <h1>System Clusters</h1>
             <p class="lead">Explore our system clusters and dependencies</p>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-9">
-            <div id="visualization"></div>
-        </div>
-        <div class="col-md-3">            <div id="details" class="card">
+    </div>    <div class="row">
+        <div class="col-md-8">
+            <div id="visualization" style="height: 600px; border: 1px solid #ddd; border-radius: 5px;"></div>
+        </div>        <div class="col-md-4">
+            <div id="details" class="card system-clusters-details">
                 <div class="card-body">
-                    <h5 class="card-title sticky-top bg-white pt-2 pb-2">Details</h5>
+                    <h5 class="card-title">Details</h5>
                     <div id="detail-content">
                         Select an item to see details
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Legend moved below visualization -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-3">
+                    <h6 class="card-title mb-2"><i class="fa fa-info-circle me-2"></i>System Clusters Legend</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6 class="mb-2">Node Types:</h6>
+                            <div class="d-flex align-items-center mb-1">
+                                <div style="width: 16px; height: 16px; background-color: #333; border-radius: 50%; margin-right: 8px;"></div>
+                                <span>Root System</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1">
+                                <div style="width: 16px; height: 16px; background-color: #555; border-radius: 50%; margin-right: 8px;"></div>
+                                <span>Business Capabilities</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1">
+                                <div style="width: 16px; height: 16px; background-color: #999; border-radius: 50%; margin-right: 8px;"></div>
+                                <span>Systems</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="mb-2">Interactions:</h6>
+                            <p class="mb-1"><i class="fa fa-mouse-pointer me-1"></i> Click nodes for details</p>
+                            <p class="mb-1"><i class="fa fa-search-plus me-1"></i> Hover to highlight</p>
+                            <p class="mb-0"><i class="fa fa-expand-arrows-alt me-1"></i> Zoom and pan</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-2">Cluster Layout:</h6>
+                            <p class="mb-1">Systems are organized hierarchically by business capability</p>
+                            <p class="mb-0">Lines show the organizational structure and relationships</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,7 +78,7 @@
                 
                 // Add cache-busting parameter to prevent browser caching issues
                 const timestamp = new Date().getTime();
-                const response = await fetch(`cap.json?_=${timestamp}`);
+                const response = await fetch(`cap_updated.json?_=${timestamp}`);
                 
                 if (!response.ok) {
                     throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);
@@ -68,10 +106,8 @@
             // Dispatch includesLoaded event if it hasn't happened yet
             if (!window.includesLoadedDispatched) {
                 document.dispatchEvent(new Event('includesLoaded'));
-            }
-        }, 500);
+            }        }, 500);
     });
-</script>
 </script>
 
 <div include-html="includes/footer.html"></div>

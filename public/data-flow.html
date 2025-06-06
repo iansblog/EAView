@@ -8,17 +8,72 @@
             <h1>Data Flow</h1>
             <p class="lead">Visualize how data flows across our systems</p>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-9">
+    </div>    <div class="row">
+        <div class="col-md-8">
             <div id="visualization"></div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
+            <!-- Legend Card -->
+            <div id="legend" class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="fa fa-key me-2"></i>Legend</h6>
+                    <div id="legend-content">
+                        <div class="legend-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="legend-color-box me-2" style="background-color: #1f77b4;"></div>
+                                <span class="legend-text">User Interfaces</span>
+                            </div>
+                        </div>
+                        <div class="legend-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="legend-color-box me-2" style="background-color: #ff7f0e;"></div>
+                                <span class="legend-text">Property Management</span>
+                            </div>
+                        </div>
+                        <div class="legend-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="legend-color-box me-2" style="background-color: #2ca02c;"></div>
+                                <span class="legend-text">Client Management</span>
+                            </div>
+                        </div>
+                        <div class="legend-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="legend-color-box me-2" style="background-color: #d62728;"></div>
+                                <span class="legend-text">Market Intelligence</span>
+                            </div>
+                        </div>
+                        <div class="legend-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="legend-color-box me-2" style="background-color: #9467bd;"></div>
+                                <span class="legend-text">Financial Operations</span>
+                            </div>
+                        </div>
+                        <div class="legend-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="legend-color-box me-2" style="background-color: #999;"></div>
+                                <span class="legend-text">Integration Target</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="legend-section">
+                            <h6 class="mb-2"><i class="fa fa-info-circle me-1"></i>Interaction</h6>
+                            <small class="text-muted">
+                                • Click nodes to see system details<br>
+                                • Drag nodes to reposition<br>
+                                • Double-click to release fixed position<br>
+                                • Scroll to zoom in/out
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Details Card -->
             <div id="details" class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Details</h5>
+                    <h6 class="card-title">System Details</h6>
                     <div id="detail-content">
-                        Select an item to see details
+                        Select a system to see details
                     </div>
                 </div>
             </div>
@@ -38,10 +93,9 @@
             try {
                 // Add a small delay to ensure DOM is fully ready
                 await new Promise(resolve => setTimeout(resolve, 100));
-                
-                // Add cache-busting parameter to prevent browser caching issues
+                  // Add cache-busting parameter to prevent browser caching issues
                 const timestamp = new Date().getTime();
-                const response = await fetch(`cap.json?_=${timestamp}`);
+                const response = await fetch(`cap_updated.json?_=${timestamp}`);
                 
                 if (!response.ok) {
                     throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);

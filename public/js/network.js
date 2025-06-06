@@ -15,10 +15,8 @@ function renderNetworkGraph(container, data) {
     const groups = new Map();
 
     // Load saved positions
-    const savedPositions = JSON.parse(localStorage.getItem('networkPositions') || '{}');
-
-    // Process systems and their integrations
-    function processSystem(system, groupName) {
+    const savedPositions = JSON.parse(localStorage.getItem('networkPositions') || '{}');    // Process systems and their integrations
+    function processSystem(system, groupName, groupColor) {
         if (system.systems) {
             system.systems.forEach(sys => {
                 // Add node if it doesn't exist
@@ -27,8 +25,18 @@ function renderNetworkGraph(container, data) {
                     nodes.set(sys.name, {
                         id: sys.name,
                         group: groupName,
-                        technology: sys.technology,
-                        status: sys.status,
+                        groupColor: groupColor,
+                        technology: sys.technology || '',
+                        status: sys.status || '',
+                        description: sys.description || '',
+                        owner: sys.owner || '',
+                        criticality: sys.criticality || '',
+                        annualCost: sys.annualCost || '',
+                        contractEndDate: sys.contractEndDate || '',
+                        deploymentType: sys.deploymentType || '',
+                        dataClassification: sys.dataClassification || '',
+                        supportLevel: sys.supportLevel || '',
+                        country: sys.country || '',
                         // Restore saved position if available
                         x: savedPos ? savedPos.x : null,
                         y: savedPos ? savedPos.y : null,
@@ -45,8 +53,10 @@ function renderNetworkGraph(container, data) {
                             nodes.set(target, {
                                 id: target,
                                 group: 'Integration Target',
+                                groupColor: '#999999',
                                 technology: '',
                                 status: '',
+                                description: 'External integration target',
                                 // Restore saved position if available
                                 x: savedPos ? savedPos.x : null,
                                 y: savedPos ? savedPos.y : null,
@@ -65,19 +75,34 @@ function renderNetworkGraph(container, data) {
                 }
             });
         }
+    }    // Process all capabilities from both businessCapabilities and capabilities
+    if (data.businessCapabilities) {
+        Object.entries(data.businessCapabilities).forEach(([key, capability]) => {
+            groups.set(key, capability.name);
+            if (capability.children) {
+                capability.children.forEach(child => {
+                    processSystem(child, capability.name, capability.color || '#6c757d');
+                });
+            } else {
+                processSystem(capability, capability.name, capability.color || '#6c757d');
+            }
+        });
     }
-
-    // Process all capabilities
-    Object.entries(data.capabilities).forEach(([key, capability]) => {
-        groups.set(key, capability.name);
-        if (capability.children) {
-            capability.children.forEach(child => {
-                processSystem(child, capability.name);
-            });
-        } else {
-            processSystem(capability, capability.name);
-        }
-    });
+    
+    if (data.capabilities) {
+        Object.entries(data.capabilities).forEach(([key, capability]) => {
+            if (!groups.has(key)) {
+                groups.set(key, capability.name);
+            }
+            if (capability.children) {
+                capability.children.forEach(child => {
+                    processSystem(child, capability.name, capability.color || '#4A90E2');
+                });
+            } else {
+                processSystem(capability, capability.name, capability.color || '#4A90E2');
+            }
+        });
+    }
 
     // Create color scale for groups
     const color = d3.scaleOrdinal(d3.schemeCategory10)
@@ -101,16 +126,15 @@ function renderNetworkGraph(container, data) {
         .scaleExtent([0.1, 4])
         .on("zoom", (event) => {
             graph.attr("transform", event.transform);
-        }));
-
-    // Create links
+        }));    // Create links
     const link = graph.append("g")
         .selectAll("line")
         .data(links)
         .join("line")
         .attr("stroke", "#999")
         .attr("stroke-opacity", 0.6)
-        .attr("stroke-width", 2);
+        .attr("stroke-width", 2)
+        .attr("class", "network-link");
 
     // Create nodes with drag behavior
     const drag = d3.drag()
@@ -159,12 +183,13 @@ function renderNetworkGraph(container, data) {
             const positions = JSON.parse(localStorage.getItem('networkPositions') || '{}');
             delete positions[d.id];
             localStorage.setItem('networkPositions', JSON.stringify(positions));
-        });
-
-    // Add circles for nodes
+        });    // Add circles for nodes with group colors
     node.append("circle")
         .attr("r", 8)
-        .attr("fill", d => color(d.group));
+        .attr("fill", d => d.groupColor || color(d.group))
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+        .attr("class", "network-node");
 
     // Add labels for nodes
     node.append("text")
@@ -175,19 +200,26 @@ function renderNetworkGraph(container, data) {
 
     // Add title for hover
     node.append("title")
-        .text(d => `${d.id}\nGroup: ${d.group}\nTechnology: ${d.technology}\nStatus: ${d.status}`);
-
-    // Handle node clicks
+        .text(d => `${d.id}\nGroup: ${d.group}\nTechnology: ${d.technology}\nStatus: ${d.status}`);    // Handle node clicks
     node.on("click", (event, d) => {
         // Find connected nodes
         const connectedLinks = links.filter(l => 
             l.source.id === d.id || l.target.id === d.id);
         
-        updateDetails({
+        updateSystemDetails({
             name: d.id,
-            description: `Group: ${d.group}`,
+            description: d.description,
+            group: d.group,
             technology: d.technology,
             status: d.status,
+            owner: d.owner,
+            criticality: d.criticality,
+            annualCost: d.annualCost,
+            contractEndDate: d.contractEndDate,
+            deploymentType: d.deploymentType,
+            dataClassification: d.dataClassification,
+            supportLevel: d.supportLevel,
+            country: d.country,
             relationships: connectedLinks.map(l => ({
                 from: l.source.id,
                 to: l.target.id,

@@ -8,10 +8,9 @@
             <h1>Entity Relationships</h1>
             <p class="lead">Visualize relationships between key business entities</p>
         </div>
-    </div>
-    <div class="row">
+    </div>    <div class="row">
         <div class="col-md-9">
-            <div id="visualization"></div>
+            <div id="visualization" class="entity-relationships chord-diagram"></div>
         </div>
         <div class="col-md-3">
             <div id="details" class="card">
@@ -38,10 +37,9 @@
             try {
                 // Add a small delay to ensure DOM is fully ready
                 await new Promise(resolve => setTimeout(resolve, 100));
-                
-                // Add cache-busting parameter to prevent browser caching issues
+                  // Add cache-busting parameter to prevent browser caching issues
                 const timestamp = new Date().getTime();
-                const response = await fetch(`cap.json?_=${timestamp}`);
+                const response = await fetch(`cap_updated.json?_=${timestamp}`);
                 
                 if (!response.ok) {
                     throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);
