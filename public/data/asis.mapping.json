@@ -1,0 +1,106 @@
+{
+  "mapping": {
+    "businessCapabilities": {
+      "source": "businessCapabilities",
+      "transformations": {
+        "propertyMapping": {
+          "name": "name",
+          "description": "description",
+          "icon": "icon",
+          "color": "color"
+        },
+        "relationships": {
+          "childrenIds": "children[].name",
+          "systemIds": "children[].systems[].name"
+        },
+        "hierarchy": {
+          "type": "flattened",
+          "parentIdGeneration": "from_path",
+          "idFormat": "{capability}_{subcapability}"
+        }
+      }
+    },
+    "systems": {
+      "source": "businessCapabilities..systems[]",
+      "transformations": {
+        "propertyMapping": {
+          "name": "name",
+          "description": "description",
+          "technology": "technology",
+          "status": "status",
+          "criticality": "criticality",
+          "owner": "owner",
+          "supportLevel": "supportLevel",
+          "deploymentType": "deploymentType"
+        },
+        "costs": {
+          "annualCost": "annualCost",
+          "fundingCountry": "country",
+          "isCentralized": {
+            "default": false
+          }
+        },
+        "usage": {
+          "source": "country",
+          "transform": "to_usage_array"
+        },
+        "contracts": {
+          "source": ["contractStartDate", "contractEndDate"],
+          "transform": "to_contract_object"
+        }
+      }
+    },
+    "dataEntities": {
+      "source": "custom",
+      "note": "Data entities need to be extracted from system integrations and created as separate entities"
+    },
+    "platforms": {
+      "source": "custom",
+      "note": "Platforms need to be identified from system technologies and grouped accordingly"
+    },
+    "deliveryPrograms": {
+      "source": "status",
+      "transformations": {
+        "grouping": "by_status",
+        "status_mapping": {
+          "Proposed": "Planning",
+          "Production": "Support",
+          "Development": "Delivery"
+        }
+      }
+    }
+  },
+  "migrationSteps": [
+    {
+      "step": 1,
+      "description": "Extract and transform business capabilities",
+      "action": "Flatten hierarchy and generate unique IDs"
+    },
+    {
+      "step": 2,
+      "description": "Transform systems",
+      "action": "Extract system details and create relationships"
+    },
+    {
+      "step": 3,
+      "description": "Create data entities",
+      "action": "Analyze integrations and create data entity catalog"
+    },
+    {
+      "step": 4,
+      "description": "Define platforms",
+      "action": "Group systems by technology and create platform definitions"
+    },
+    {
+      "step": 5,
+      "description": "Create delivery programs",
+      "action": "Group systems by status and create program structure"
+    }
+  ],
+  "notes": {
+    "idGeneration": "Use consistent ID format: lowercase, underscore separated, include parent context where relevant",
+    "dataClassification": "Preserve existing classification levels",
+    "relationships": "Create bi-directional references where appropriate",
+    "validation": "Ensure all referenced IDs exist in their respective collections"
+  }
+}

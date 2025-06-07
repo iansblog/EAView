@@ -1,0 +1,160 @@
+<!-- System Roadmap View Page -->
+<div include-html="includes/header.html"></div>
+<div include-html="includes/navigation.html"></div>
+
+<!-- Add flag icons CSS, font awesome, and D3.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<style>
+.gantt-bar {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.gantt-bar:hover {
+    opacity: 0.8;
+}
+.gantt-axis text {
+    font-size: 12px;
+}
+.gantt-grid line {
+    stroke: #e0e0e0;
+    stroke-width: 1px;
+}
+.tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: none;
+    pointer-events: none;
+    z-index: 1000;
+}
+.today-line {
+    pointer-events: none;
+}
+.today-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+</style>
+
+<div class="container-fluid mt-4">    <div class="row">
+        <div class="col-12">
+            <h1>System Roadmap</h1>
+            <p class="lead">View system contract timelines and status across the enterprise</p>
+            
+            <!-- Filter controls -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="statusFilter" class="form-label">Status</label>
+                            <select class="form-select" id="statusFilter">
+                                <option value="all">All Statuses</option>
+                                <option value="Production">Production</option>
+                                <option value="Proposed">Proposed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="criticalityFilter" class="form-label">Criticality</label>
+                            <select class="form-select" id="criticalityFilter">
+                                <option value="all">All Criticality</option>
+                                <option value="Critical">Critical</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="contractFilter" class="form-label">Contract Status</label>
+                            <select class="form-select" id="contractFilter">
+                                <option value="all">All Contracts</option>
+                                <option value="ending-6">Ending within 6 months</option>
+                                <option value="ending-12">Ending within 12 months</option>
+                                <option value="active">Active contracts</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="searchFilter" class="form-label">Search</label>
+                            <input type="text" class="form-control" id="searchFilter" placeholder="Search systems...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div id="visualization"></div>
+        </div>
+        <div class="col-md-3">
+            <div id="details" class="card">
+                <div class="card-body">
+                    <h5 class="card-title sticky-top bg-white pt-2 pb-2">System Details</h5>
+                    <div id="detail-content">
+                        Select a system to see details
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/gantt.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Initialize the gantt view after includes are loaded
+    document.addEventListener('includesLoaded', function() {
+        // Load data and render gantt view
+        async function loadAndRenderGantt() {
+            try {
+                // Add a small delay to ensure DOM is fully ready
+                await new Promise(resolve => setTimeout(resolve, 100));
+                // Add cache-busting parameter to prevent browser caching issues
+                const timestamp = new Date().getTime();
+                const response = await fetch(`data/be.json?_=${timestamp}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                // Extract systems data for gantt chart
+                const systems = extractSystemsData(data);
+                const viz = document.getElementById('visualization');
+                renderGanttChart(viz, systems);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('visualization').innerHTML = 
+                    '<div class="alert alert-danger">Error loading data: ' + error.message + '</div>';
+            }
+        }
+        
+        loadAndRenderGantt();
+    });
+    
+    // Fallback initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            if (!window.includesLoadedDispatched) {
+                document.dispatchEvent(new Event('includesLoaded'));
+            }
+        }, 500);
+    });
+</script>
+
+<div include-html="includes/footer.html"></div>

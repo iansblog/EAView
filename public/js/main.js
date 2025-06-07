@@ -1,5 +1,56 @@
 // Main application logic - Shared utility functions for all views
 
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'long' });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+}
+
+function getContractAlertClass(dateStr) {
+    const contractDate = new Date(dateStr);
+    const today = new Date();
+    const sixMonths = 6 * 30 * 24 * 60 * 60 * 1000; // approximate 6 months in milliseconds
+    const twelveMonths = 12 * 30 * 24 * 60 * 60 * 1000; // approximate 12 months in milliseconds
+    
+    if (contractDate < today || (contractDate - today) <= sixMonths) {
+        // Red: 6 months or less
+        return 'alert-danger';
+    } else if ((contractDate - today) <= twelveMonths) {
+        // Amber: 6-12 months
+        return 'alert-warning';
+    } else {
+        // Green: over 12 months
+        return 'alert-success';
+    }
+}
+
+function getRemainingTimeText(dateStr) {
+    const contractDate = new Date(dateStr);
+    const today = new Date();
+    
+    if (contractDate < today) {
+        return `<strong>(Expired)</strong>`;
+    }
+    
+    // Calculate difference in months
+    const months = (contractDate.getFullYear() - today.getFullYear()) * 12 + 
+                   (contractDate.getMonth() - today.getMonth());
+    
+    if (months < 1) {
+        // Less than a month, show in days
+        const days = Math.round((contractDate - today) / (24 * 60 * 60 * 1000));
+        return `<strong>(${days} days remaining)</strong>`;
+    } else if (months < 12) {
+        return `<strong>(${months} months remaining)</strong>`;
+    } else {
+        const years = Math.floor(months / 12);
+        const remainingMonths = months % 12;
+        return `<strong>(${years} year${years > 1 ? 's' : ''} ${remainingMonths > 0 ? `and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''} remaining)</strong>`;
+    }
+}
+
 // Update details panel
 function updateDetails(data) {
     const detailContent = document.getElementById('detail-content');
@@ -183,40 +234,14 @@ function updateSystemDetails(data) {
             html += `<li><i class="fa fa-cloud me-2"></i><strong>Deployment:</strong> ${data.deploymentType}</li>`;
         }
         if (data.contractEndDate) {
-            html += `<li><i class="fa fa-calendar me-2"></i><strong>Contract Ends:</strong> ${data.contractEndDate}</li>`;
+            const contractEndFormatted = formatDate(data.contractEndDate);
+            const contractRagStatusClass = getContractAlertClass(data.contractEndDate);
+            const remainingTime = getRemainingTimeText(data.contractEndDate);
+            html += `<li class="mt-2"><i class="fa fa-calendar me-2"></i><strong>Contract End:</strong>`;
+            html += `<div class="${contractRagStatusClass} d-inline-block ms-2 px-2 py-1 rounded">${contractEndFormatted} ${remainingTime}</div></li>`;
         }
         
         html += '</ul></div>';
-    }
-    
-    // Integration relationships with proper arrows
-    if (data.relationships && data.relationships.length > 0) {
-        html += '<div class="mb-3">';
-        html += '<h6><i class="fa fa-exchange-alt me-2"></i>Data Flow Connections:</h6>';
-        html += '<div class="integration-list">';
-        
-        data.relationships.forEach(rel => {
-            const isSource = rel.from === data.name;
-            const direction = isSource ? 'outgoing' : 'incoming';
-            const arrowIcon = isSource ? 'fa-arrow-right' : 'fa-arrow-left';
-            const targetSystem = isSource ? rel.to : rel.from;
-            
-            html += `<div class="d-flex align-items-center mb-2 p-2" style="background-color: #f8f9fa; border-radius: 4px;">`;
-            html += `<i class="fa ${arrowIcon} me-2" style="color: ${isSource ? '#28a745' : '#17a2b8'};"></i>`;
-            html += `<span class="flex-grow-1">${targetSystem}</span>`;
-            html += `<span class="badge ${isSource ? 'bg-success' : 'bg-info'} ms-2">${direction}</span>`;
-            html += '</div>';
-        });
-        
-        html += '</div></div>';
-    }
-    
-    // Group/capability information
-    if (data.group && data.group !== 'Integration Target') {
-        html += '<div class="mb-3">';
-        html += '<h6><i class="fa fa-layer-group me-2"></i>Business Capability:</h6>';
-        html += `<span class="badge" style="background-color: #6c757d; color: white; padding: 0.5rem 1rem;">${data.group}</span>`;
-        html += '</div>';
     }
     
     // Security and compliance
@@ -241,15 +266,12 @@ function updateSystemDetails(data) {
         html += '</div></div>';
     }
     
-    // No integration message if system has no connections
-    if ((!data.relationships || data.relationships.length === 0)) {
-        html += `<div class="alert alert-info mt-3" role="alert">`;
-        html += `<div class="d-flex align-items-center">`;
-        html += `<i class="fa fa-info-circle me-3"></i>`;
-        html += `<div>`;
-        html += `<h6 class="alert-heading mb-1">No Data Flow Connections</h6>`;
-        html += `<p class="mb-0">This system currently has no documented data flow connections with other systems.</p>`;
-        html += `</div></div></div>`;
+    // Group/capability information
+    if (data.group && data.group !== 'Integration Target') {
+        html += '<div class="mb-3">';
+        html += '<h6><i class="fa fa-layer-group me-2"></i>Business Capability:</h6>';
+        html += `<span class="badge" style="background-color: #6c757d; color: white; padding: 0.5rem 1rem;">${data.group}</span>`;
+        html += '</div>';
     }
     
     html += '</div>';
@@ -334,27 +356,14 @@ function updateClusterDetails(data) {
             html += `<li><i class="fa fa-cloud me-2"></i><strong>Deployment:</strong> ${data.deploymentType}</li>`;
         }
         if (data.contractEndDate) {
-            html += `<li><i class="fa fa-calendar me-2"></i><strong>Contract Ends:</strong> ${data.contractEndDate}</li>`;
+            const contractEndFormatted = formatDate(data.contractEndDate);
+            const contractRagStatusClass = getContractAlertClass(data.contractEndDate);
+            const remainingTime = getRemainingTimeText(data.contractEndDate);
+            html += `<li class="mt-2"><i class="fa fa-calendar me-2"></i><strong>Contract End:</strong>`;
+            html += `<div class="${contractRagStatusClass} d-inline-block ms-2 px-2 py-1 rounded">${contractEndFormatted} ${remainingTime}</div></li>`;
         }
         
         html += '</ul></div>';
-    }
-    
-    // Integration relationships
-    if (data.relationships && data.relationships.length > 0) {
-        html += '<div class="mb-3">';
-        html += '<h6><i class="fa fa-exchange-alt me-2"></i>Integrations:</h6>';
-        html += '<div class="integration-list">';
-        
-        data.relationships.forEach(rel => {
-            html += `<div class="d-flex align-items-center mb-2 p-2" style="background-color: #f8f9fa; border-radius: 4px;">`;
-            html += `<i class="fa fa-arrow-right me-2" style="color: #28a745;"></i>`;
-            html += `<span class="flex-grow-1">${rel.to}</span>`;
-            html += `<span class="badge bg-success ms-2">integration</span>`;
-            html += '</div>';
-        });
-        
-        html += '</div></div>';
     }
     
     // Security and support
