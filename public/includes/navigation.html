@@ -12,6 +12,7 @@
                 <a class="nav-link" href="business-capabilities.html" id="nav-capabilities">Business Capabilities</a>
                 <a class="nav-link" href="entity-relationships.html" id="nav-chord">Entity Relationships</a>                <a class="nav-link" href="data-flow.html" id="nav-network">Data Flow</a>
                 <a class="nav-link" href="system-clusters.html" id="nav-cluster">System Clusters</a>
+                <a class="nav-link" href="ea-report.html" id="nav-report">EA Report</a>
             </div>
         </div>
     </div>
@@ -30,9 +31,10 @@
         } else if (currentPage.includes('entity-relationships')) {
             activeNavId = 'nav-chord';
         } else if (currentPage.includes('data-flow')) {
-            activeNavId = 'nav-network';
-        } else if (currentPage.includes('system-clusters')) {
+            activeNavId = 'nav-network';        } else if (currentPage.includes('system-clusters')) {
             activeNavId = 'nav-cluster';
+        } else if (currentPage.includes('ea-report')) {
+            activeNavId = 'nav-report';
         } else if (currentPage === '/' || currentPage === '' || currentPage.includes('index.html')) {
             activeNavId = 'nav-home';
         }

@@ -1,0 +1,119 @@
+<!-- EA Report Page -->
+<div include-html="includes/header.html"></div>
+<div include-html="includes/navigation.html"></div>
+
+<!-- Add flag icons CSS and font awesome -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/d3@7"></link>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>Enterprise Architecture Report</h1>
+            <p class="lead">Comprehensive view of our Enterprise Architecture landscape</p>
+        </div>
+    </div>
+    
+    <!-- Metadata Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Overview</h2>
+                </div>
+                <div class="card-body" id="metadata-content">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Capabilities Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Business Capabilities</h2>
+                </div>
+                <div class="card-body">
+                    <div id="capabilities-tree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Capability Coverage</h2>
+                </div>
+                <div class="card-body">
+                    <div id="capabilities-coverage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Systems and Platforms Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Systems Landscape</h2>
+                </div>
+                <div class="card-body">
+                    <div id="systems-landscape"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Platform Distribution</h2>
+                </div>
+                <div class="card-body">
+                    <div id="platform-distribution"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Entities Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Data Entity Relationships</h2>
+                </div>
+                <div class="card-body">
+                    <div id="data-relationships"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery Programs Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Delivery Programs Timeline</h2>
+                </div>
+                <div class="card-body">
+                    <div id="delivery-timeline"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="js/ea-report.js"></script>
+
+<div include-html="includes/footer.html"></div>

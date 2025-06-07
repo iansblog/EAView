@@ -1,0 +1,234 @@
+{
+  "metadata": {
+    "name": "Knight Frank Enterprise Architecture Catalog",
+    "description": "Comprehensive Enterprise Architecture catalog including business capabilities, systems, data entities, platforms, and delivery programs",
+    "version": "1.0.0",
+    "lastUpdated": "2025-06-07T00:00:00Z",
+    "organisation": {
+      "name": "Knight Frank",
+      "division": "Global IT",
+      "region": "Global"
+    },
+    "contact": {
+      "primaryArchitect": "Enterprise Architecture Team",
+      "email": "ea@knightfrank.com",
+      "team": "Enterprise Architecture"
+    },
+    "governance": {
+      "reviewCycle": "Quarterly",
+      "nextReviewDate": "2025-09-07",
+      "approvers": [
+        "Enterprise Architecture Board",
+        "Technology Leadership Team"
+      ]
+    },
+    "framework": {
+      "name": "Knight Frank EA Framework",
+      "version": "2025.1",
+      "customisations": [
+        "Property Management Industry Extensions",
+        "Digital Transformation Adaptations"
+      ]
+    },
+    "tags": [
+      "Property Management",
+      "Digital Transformation",
+      "Enterprise Systems"
+    ]
+  },
+  "businessCapabilities": {
+    "property_management": {
+      "name": "Property Management",
+      "description": "End-to-end management of property assets",
+      "icon": "fa-building",
+      "color": "#4A90E2",
+      "childrenIds": ["property_management_core_systems"],
+      "systemIds": ["property_360", "repairs_maintenance_system"]
+    },
+    "property_management_core_systems": {
+      "name": "Core Property Systems",
+      "description": "Primary systems for property management",
+      "icon": "fa-building-circle-check",
+      "color": "#69A7E8",
+      "parentId": "property_management",
+      "systemIds": ["property_360", "repairs_maintenance_system"]
+    }
+  },
+  "systems": {
+    "property_360": {
+      "name": "Property 360",
+      "description": "Core property management solution covering tenancy, rent, maintenance, and inspections",
+      "technology": "Custom Development",
+      "status": "Planning",
+      "criticality": "Critical",
+      "owner": "Property Management Team",
+      "supportLevel": "TBD",
+      "deploymentType": "SaaS",
+      "supplier": {
+        "name": "Knight Frank IT",
+        "contactDetails": {
+          "supportEmail": "property360.support@knightfrank.com",
+          "accountManager": "Internal Development Team"
+        }
+      },
+      "costs": {
+        "annualCost": "$540,000",
+        "fundingCountry": "GB",
+        "isCentralised": true,
+        "costBreakdown": {
+          "development": 300000,
+          "infrastructure": 120000,
+          "support": 120000
+        }
+      },
+      "usage": [
+        {
+          "country": "GB",
+          "userCount": 500
+        }
+      ],
+      "contracts": [
+        {
+          "startDate": "2025-03-01",
+          "endDate": "2026-09-30",
+          "value": "$540,000"
+        }
+      ],
+      "dataEntities": [
+        "repairs_request",
+        "asset_record",
+        "lease_agreement",
+        "customer_record",
+        "financial_transaction"
+      ],
+      "platformId": "custom_development_platform",
+      "deliveryProgramId": "digital_transformation_2025"
+    },
+    "repairs_maintenance_system": {
+      "name": "Repairs and Maintenance System",
+      "description": "Platform for managing repairs, contractor dispatch, and service SLAs",
+      "technology": "Fixflo",
+      "status": "Planning",
+      "criticality": "High",
+      "owner": "Property Management Team",
+      "supportLevel": "TBD",
+      "deploymentType": "SaaS",
+      "supplier": {
+        "name": "Fixflo",
+        "reseller": "Direct",
+        "contactDetails": {
+          "supportEmail": "support@fixflo.com",
+          "supportPhone": "+44 123 456 7890",
+          "accountManager": "Fixflo Account Team"
+        }
+      },
+      "costs": {
+        "annualCost": "$180,000",
+        "fundingCountry": "GB",
+        "isCentralised": true,
+        "costBreakdown": {
+          "subscription": 150000,
+          "support": 30000
+        }
+      },
+      "usage": [
+        {
+          "country": "GB",
+          "userCount": 200
+        }
+      ],
+      "contracts": [
+        {
+          "startDate": "2025-08-15",
+          "endDate": "2026-08-15",
+          "value": "$180,000"
+        }
+      ],
+      "dataEntities": [
+        "repairs_request",
+        "customer_record",
+        "mobile_app_user",
+        "service_request"
+      ],
+      "platformId": "property_management_platform",
+      "deliveryProgramId": "digital_transformation_2025"
+    }
+  },
+  "dataEntities": {
+    "repairs_request": {
+      "name": "Repairs Request",
+      "description": "Record of property repair and maintenance requests",
+      "classification": "Internal",
+      "groupId": "property_management",
+      "attributes": [
+        {
+          "name": "requestId",
+          "type": "string",
+          "description": "Unique identifier for the repair request"
+        },
+        {
+          "name": "propertyId",
+          "type": "string",
+          "description": "Associated property identifier"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Current status of the repair request"
+        }
+      ],
+      "relationships": [
+        {
+          "targetEntityId": "property_record",
+          "type": "ManyToOne",
+          "description": "Property where repair is needed"
+        },
+        {
+          "targetEntityId": "service_request",
+          "type": "OneToOne",
+          "description": "Associated service request"
+        }
+      ]
+    }
+  },
+  "platforms": {
+    "property_management_platform": {
+      "name": "Property Management Platform",
+      "description": "Core platform for property management applications and services",
+      "category": "ApplicationPlatform",
+      "vendor": "Multiple",
+      "systemIds": ["property_360", "repairs_maintenance_system"]
+    },
+    "custom_development_platform": {
+      "name": "Custom Development Platform",
+      "description": "Internal development platform for custom solutions",
+      "category": "ApplicationPlatform",
+      "vendor": "Knight Frank",
+      "systemIds": ["property_360"]
+    }
+  },
+  "deliveryPrograms": {
+    "digital_transformation_2025": {
+      "name": "Digital Transformation 2025",
+      "description": "Strategic program for digital transformation of property management services",
+      "status": "Planning",
+      "startDate": "2025-01-01",
+      "endDate": "2025-12-31",
+      "budget": "$2,000,000",
+      "sponsor": "CTO",
+      "systemIds": ["property_360", "repairs_maintenance_system"],
+      "milestones": [
+        {
+          "name": "Property 360 Launch",
+          "date": "2025-09-30",
+          "description": "Launch of new Property 360 platform"
+        },
+        {
+          "name": "Repairs System Integration",
+          "date": "2025-08-15",
+          "description": "Complete integration of new repairs and maintenance system"
+        }
+      ]
+    }
+  }
+}

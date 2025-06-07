@@ -31,13 +31,30 @@
           "criticality": "criticality",
           "owner": "owner",
           "supportLevel": "supportLevel",
-          "deploymentType": "deploymentType"
+          "deploymentType": "deploymentType",
+          "dataEntities": "integrates[]"
+        },
+        "supplier": {
+          "transform": "extract_supplier_info",
+          "source": ["technology"]
+        },
+        "platformId": {
+          "transform": "derive_platform_from_technology",
+          "source": "technology"
+        },
+        "deliveryProgramId": {
+          "transform": "derive_program_from_status",
+          "source": "status"
         },
         "costs": {
           "annualCost": "annualCost",
           "fundingCountry": "country",
-          "isCentralized": {
+          "isCentralised": {
             "default": false
+          },
+          "costBreakdown": {
+            "source": "annualCost",
+            "transform": "parse_cost_breakdown"
           }
         },
         "usage": {
@@ -49,14 +66,40 @@
           "transform": "to_contract_object"
         }
       }
-    },
-    "dataEntities": {
-      "source": "custom",
-      "note": "Data entities need to be extracted from system integrations and created as separate entities"
-    },
-    "platforms": {
-      "source": "custom",
-      "note": "Platforms need to be identified from system technologies and grouped accordingly"
+    },    "dataEntities": {
+      "source": "businessCapabilities..systems[].integrates[]",
+      "transformations": {
+        "propertyMapping": {
+          "name": ".",
+          "description": "extract_description_from_system_context",
+          "classification": {
+            "source": "parent.dataClassification",
+            "default": "Internal"
+          }
+        },
+        "relationships": {
+          "transform": "create_entity_relationships",
+          "source": ["name", "parent.integrates[]"]
+        },
+        "groupId": {
+          "transform": "derive_group_from_context",
+          "source": "parent.technology"
+        }
+      }
+    },    "platforms": {
+      "source": "businessCapabilities..systems[].technology",
+      "transformations": {
+        "propertyMapping": {
+          "name": "derive_platform_name",
+          "description": "derive_platform_description",
+          "category": "derive_platform_category",
+          "vendor": "extract_vendor_from_technology"
+        },
+        "systemIds": {
+          "transform": "collect_systems_by_technology",
+          "source": [".", "parent"]
+        }
+      }
     },
     "deliveryPrograms": {
       "source": "status",
