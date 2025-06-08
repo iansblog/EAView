@@ -2,6 +2,7 @@
   "mapping": {
     "businessCapabilities": {
       "source": "businessCapabilities",
+      "preserveStructure": true,
       "transformations": {
         "propertyMapping": {
           "name": "name",
@@ -9,19 +10,29 @@
           "icon": "icon",
           "color": "color"
         },
-        "relationships": {
-          "childrenIds": "children[].name",
-          "systemIds": "children[].systems[].name"
-        },
-        "hierarchy": {
-          "type": "flattened",
-          "parentIdGeneration": "from_path",
-          "idFormat": "{capability}_{subcapability}"
+        "children": {
+          "source": "children",
+          "preserveStructure": true,
+          "transformations": {
+            "propertyMapping": {
+              "name": "name",
+              "description": "description",
+              "icon": "icon",
+              "color": "color"
+            },
+            "systems": {
+              "source": "systems",
+              "generateIds": true,
+              "idFormat": "{capability}_{system_name}",
+              "createReferences": true
+            }
+          }
         }
       }
-    },
-    "systems": {
+    },    "systems": {
       "source": "businessCapabilities..systems[]",
+      "generateId": true,
+      "idFormat": "{capability}_{name}",
       "transformations": {
         "propertyMapping": {
           "name": "name",
@@ -32,7 +43,10 @@
           "owner": "owner",
           "supportLevel": "supportLevel",
           "deploymentType": "deploymentType",
-          "dataEntities": "integrates[]"
+          "dataEntities": {
+            "source": "integrates[]",
+            "transform": "normalize_entity_names"
+          }
         },
         "supplier": {
           "transform": "extract_supplier_info",
@@ -68,47 +82,111 @@
       }
     },    "dataEntities": {
       "source": "businessCapabilities..systems[].integrates[]",
+      "deduplicateEntities": true,
       "transformations": {
         "propertyMapping": {
           "name": ".",
-          "description": "extract_description_from_system_context",
+          "description": "extract_description_from_systems",
           "classification": {
             "source": "parent.dataClassification",
             "default": "Internal"
+          },
+          "attributes": {
+            "source": "parent.dataAttributes",
+            "optional": true
           }
         },
         "relationships": {
-          "transform": "create_entity_relationships",
-          "source": ["name", "parent.integrates[]"]
+          "transform": "create_bidirectional_relationships",
+          "source": ["name", "parent.integrates[]", "parent.name"],
+          "createImpliedRelationships": true
         },
         "groupId": {
-          "transform": "derive_group_from_context",
-          "source": "parent.technology"
+          "transform": "derive_domain_group",
+          "source": ["parent.technology", "parent.owner"]
         }
       }
     },    "platforms": {
       "source": "businessCapabilities..systems[].technology",
+      "deduplicatePlatforms": true,
       "transformations": {
         "propertyMapping": {
-          "name": "derive_platform_name",
-          "description": "derive_platform_description",
-          "category": "derive_platform_category",
-          "vendor": "extract_vendor_from_technology"
+          "name": "derive_normalized_platform_name",
+          "description": "generate_platform_description",
+          "category": {
+            "transform": "categorize_platform",
+            "mapping": {
+              "Azure.*": "ApplicationPlatform",
+              "SAP": "IntegrationPlatform",
+              "Microsoft.*": "ApplicationPlatform",
+              "Custom.*": "ApplicationPlatform",
+              ".*Dynamics.*": "ApplicationPlatform",
+              "Power BI": "DataPlatform",
+              "Fixflo": "ApplicationPlatform",
+              "DocuSign": "ApplicationPlatform",
+              "SharePoint": "IntegrationPlatform"
+            },
+            "default": "ApplicationPlatform"
+          },
+          "vendor": {
+            "transform": "extract_vendor",
+            "mapping": {
+              "Azure.*": "Microsoft",
+              "Microsoft.*": "Microsoft",
+              "SAP": "SAP",
+              "Power BI": "Microsoft",
+              "Fixflo": "Fixflo",
+              "DocuSign": "DocuSign",
+              "SharePoint": "Microsoft",
+              "Custom.*": "Knight Frank"
+            }
+          }
         },
         "systemIds": {
-          "transform": "collect_systems_by_technology",
-          "source": [".", "parent"]
+          "transform": "collect_systems_by_platform",
+          "source": [".", "parent"],
+          "groupSimilar": true
         }
       }
-    },
-    "deliveryPrograms": {
-      "source": "status",
+    },    "deliveryPrograms": {
+      "source": "businessCapabilities..systems[]",
       "transformations": {
-        "grouping": "by_status",
-        "status_mapping": {
-          "Proposed": "Planning",
-          "Production": "Support",
-          "Development": "Delivery"
+        "groupByStatus": true,
+        "propertyMapping": {
+          "name": "derive_program_name",
+          "description": "generate_program_description",
+          "status": {
+            "source": "status",
+            "mapping": {
+              "Proposed": "Planning",
+              "Production": "Support",
+              "Development": "Delivery"
+            }
+          },
+          "startDate": {
+            "source": "contractStartDate",
+            "fallback": "2025-06-07"
+          },
+          "endDate": {
+            "source": "contractEndDate",
+            "required": true
+          },
+          "budget": {
+            "source": "annualCost",
+            "transform": "calculate_program_budget"
+          },
+          "sponsor": {
+            "source": "owner",
+            "transform": "derive_sponsor"
+          }
+        },
+        "systemIds": {
+          "source": "name",
+          "transform": "create_system_references"
+        },
+        "milestones": {
+          "transform": "generate_program_milestones",
+          "source": ["status", "contractStartDate", "contractEndDate"]
         }
       }
     }

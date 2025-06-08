@@ -47,10 +47,7 @@
                                                                              ],
                                                              "systemIds":  [
                                                                                "property_360",
-                                                                               "repairs_and_maintenance_system",
-                                                                               "asset_management_system",
-                                                                               "lease_management_platform",
-                                                                               "property_management_system"
+                                                                               "repairs_maintenance_system"
                                                                            ]
                                                          },
                                  "property_management_core_systems":  {
@@ -61,9 +58,7 @@
                                                                           "parentId":  "property_management",
                                                                           "systemIds":  [
                                                                                             "property_360",
-                                                                                            "repairs_and_maintenance_system",
-                                                                                            "asset_management_system",
-                                                                                            "lease_management_platform"
+                                                                                            "repairs_maintenance_system"
                                                                                         ]
                                                                       }
                              },
