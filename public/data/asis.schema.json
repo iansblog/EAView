@@ -202,8 +202,7 @@
                   }
                 }
               }
-            },
-            "relationships": {
+            },            "relationships": {
               "type": "array",
               "items": {
                 "type": "object",
@@ -224,6 +223,16 @@
                   }
                 }
               }
+            },
+            "icon": {
+              "type": "string",
+              "pattern": "^fa-[a-zA-Z-]+$",
+              "description": "Font Awesome icon class"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "description": "Hex color code"
             }
           }
         }

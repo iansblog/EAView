@@ -37,35 +37,679 @@
                               ]
                  },
     "businessCapabilities":  {
+                                 "property_management_core_property_systems":  {
+                                                                                   "name":  "Core Property Systems",
+                                                                                   "description":  "Primary systems for property management",
+                                                                                   "icon":  "fa-building-circle-check",
+                                                                                   "color":  "#69A7E8",
+                                                                                   "parentId":  "property_management",
+                                                                                   "systemIds":  [
+                                                                                                     "property_360",
+                                                                                                     "repairs_and_maintenance_system",
+                                                                                                     "asset_management_system",
+                                                                                                     "lease_management_platform"
+                                                                                                 ]
+                                                                               },
+                                 "property_management_property_marketing":  {
+                                                                                "name":  "Property Marketing",
+                                                                                "description":  "Marketing and promotion of properties",
+                                                                                "icon":  "fa-bullhorn",
+                                                                                "color":  "#69A7E8",
+                                                                                "parentId":  "property_management",
+                                                                                "systemIds":  [
+                                                                                                  "knight_frank_website_cms",
+                                                                                                  "property_listings_service",
+                                                                                                  "agent_directory"
+                                                                                              ]
+                                                                            },
+                                 "property_management_property_transactions":  {
+                                                                                   "name":  "Property Transactions",
+                                                                                   "description":  "Handling property sales and lettings",
+                                                                                   "icon":  "fa-handshake",
+                                                                                   "color":  "#69A7E8",
+                                                                                   "parentId":  "property_management",
+                                                                                   "systemIds":  [
+                                                                                                     "transaction_service",
+                                                                                                     "esignature_and_digital_docs",
+                                                                                                     "legal_and_conveyancing_management",
+                                                                                                     "crm",
+                                                                                                     "financial_management"
+                                                                                                 ]
+                                                                               },
+                                 "property_management_digital_asset_management":  {
+                                                                                      "name":  "Digital Asset Management",
+                                                                                      "description":  "Management of digital assets for properties",
+                                                                                      "icon":  "fa-images",
+                                                                                      "color":  "#69A7E8",
+                                                                                      "parentId":  "property_management",
+                                                                                      "systemIds":  [
+                                                                                                        "digital_asset_management",
+                                                                                                        "mobile_app_platform"
+                                                                                                    ]
+                                                                                  },
+                                 "property_management_property_portfolio_management":  {
+                                                                                           "name":  "Property Portfolio Management",
+                                                                                           "description":  "Managing property portfolios for clients",
+                                                                                           "icon":  "fa-folder-open",
+                                                                                           "color":  "#69A7E8",
+                                                                                           "parentId":  "property_management",
+                                                                                           "systemIds":  [
+                                                                                                             "property_management_system",
+                                                                                                             "analytics_platform"
+                                                                                                         ]
+                                                                                       },
                                  "property_management":  {
                                                              "name":  "Property Management",
                                                              "description":  "End-to-end management of property assets",
                                                              "icon":  "fa-building",
                                                              "color":  "#4A90E2",
                                                              "childrenIds":  [
-                                                                                 "property_management_core_systems"
+                                                                                 "property_management_core_property_systems",
+                                                                                 "property_management_property_marketing",
+                                                                                 "property_management_property_transactions",
+                                                                                 "property_management_digital_asset_management",
+                                                                                 "property_management_property_portfolio_management"
                                                                              ],
                                                              "systemIds":  [
                                                                                "property_360",
                                                                                "repairs_and_maintenance_system",
                                                                                "asset_management_system",
                                                                                "lease_management_platform",
-                                                                               "property_management_system"
+                                                                               "knight_frank_website_cms",
+                                                                               "property_listings_service",
+                                                                               "agent_directory",
+                                                                               "transaction_service",
+                                                                               "esignature_and_digital_docs",
+                                                                               "legal_and_conveyancing_management",
+                                                                               "crm",
+                                                                               "financial_management",
+                                                                               "digital_asset_management",
+                                                                               "mobile_app_platform",
+                                                                               "property_management_system",
+                                                                               "analytics_platform"
                                                                            ]
                                                          },
-                                 "property_management_core_systems":  {
-                                                                          "name":  "Core Property Systems",
-                                                                          "description":  "Primary systems for property management",
-                                                                          "icon":  "fa-building-circle-check",
-                                                                          "color":  "#69A7E8",
-                                                                          "parentId":  "property_management",
+                                 "client_management_client_relationship_management":  {
+                                                                                          "name":  "Client Relationship Management",
+                                                                                          "description":  "Managing client interactions and data",
+                                                                                          "icon":  "fa-user-tie",
+                                                                                          "color":  "#72D695",
+                                                                                          "parentId":  "client_management",
+                                                                                          "systemIds":  [
+                                                                                                            "crm",
+                                                                                                            "master_data_management"
+                                                                                                        ]
+                                                                                      },
+                                 "client_management_client_reporting":  {
+                                                                            "name":  "Client Reporting",
+                                                                            "description":  "Generating and delivering client reports",
+                                                                            "icon":  "fa-file-chart-line",
+                                                                            "color":  "#72D695",
+                                                                            "parentId":  "client_management",
+                                                                            "systemIds":  [
+                                                                                              "power_bi_service",
+                                                                                              "analytics_platform"
+                                                                                          ]
+                                                                        },
+                                 "client_management":  {
+                                                           "name":  "Client Management",
+                                                           "description":  "Managing client relationships and services",
+                                                           "icon":  "fa-users",
+                                                           "color":  "#50C878",
+                                                           "childrenIds":  [
+                                                                               "client_management_client_relationship_management",
+                                                                               "client_management_client_reporting"
+                                                                           ],
+                                                           "systemIds":  [
+                                                                             "crm",
+                                                                             "master_data_management",
+                                                                             "power_bi_service",
+                                                                             "analytics_platform"
+                                                                         ]
+                                                       },
+                                 "market_intelligence_market_analysis":  {
+                                                                             "name":  "Market Analysis",
+                                                                             "description":  "Analysis of property market trends",
+                                                                             "icon":  "fa-chart-bar",
+                                                                             "color":  "#FF8A8A",
+                                                                             "parentId":  "market_intelligence",
+                                                                             "systemIds":  [
+                                                                                               "analytics_platform",
+                                                                                               "power_bi_service",
+                                                                                               "data_platform"
+                                                                                           ]
+                                                                         },
+                                 "market_intelligence_competitor_analysis":  {
+                                                                                 "name":  "Competitor Analysis",
+                                                                                 "description":  "Tracking and analyzing competitor activities",
+                                                                                 "icon":  "fa-binoculars",
+                                                                                 "color":  "#FF8A8A",
+                                                                                 "parentId":  "market_intelligence",
+                                                                                 "systemIds":  [
+                                                                                                   "analytics_platform"
+                                                                                               ]
+                                                                             },
+                                 "market_intelligence":  {
+                                                             "name":  "Market Intelligence",
+                                                             "description":  "Market analysis and insights",
+                                                             "icon":  "fa-chart-line",
+                                                             "color":  "#FF6B6B",
+                                                             "childrenIds":  [
+                                                                                 "market_intelligence_market_analysis",
+                                                                                 "market_intelligence_competitor_analysis"
+                                                                             ],
+                                                             "systemIds":  [
+                                                                               "analytics_platform",
+                                                                               "power_bi_service",
+                                                                               "data_platform"
+                                                                           ]
+                                                         },
+                                 "financial_operations_transaction_processing":  {
+                                                                                     "name":  "Transaction Processing",
+                                                                                     "description":  "Processing financial transactions",
+                                                                                     "icon":  "fa-money-bill-transfer",
+                                                                                     "color":  "#FFE44D",
+                                                                                     "parentId":  "financial_operations",
+                                                                                     "systemIds":  [
+                                                                                                       "transaction_service",
+                                                                                                       "sap",
+                                                                                                       "invoice_automation",
+                                                                                                       "budgeting_and_forecasting_tool"
+                                                                                                   ]
+                                                                                 },
+                                 "financial_operations_financial_reporting":  {
+                                                                                  "name":  "Financial Reporting",
+                                                                                  "description":  "Generation of financial reports",
+                                                                                  "icon":  "fa-file-invoice-dollar",
+                                                                                  "color":  "#FFE44D",
+                                                                                  "parentId":  "financial_operations",
+                                                                                  "systemIds":  [
+                                                                                                    "financial_management",
+                                                                                                    "power_bi_service"
+                                                                                                ]
+                                                                              },
+                                 "financial_operations":  {
+                                                              "name":  "Financial Operations",
+                                                              "description":  "Managing financial aspects of the business",
+                                                              "icon":  "fa-coins",
+                                                              "color":  "#FFD700",
+                                                              "childrenIds":  [
+                                                                                  "financial_operations_transaction_processing",
+                                                                                  "financial_operations_financial_reporting"
+                                                                              ],
+                                                              "systemIds":  [
+                                                                                "transaction_service",
+                                                                                "sap",
+                                                                                "invoice_automation",
+                                                                                "budgeting_and_forecasting_tool",
+                                                                                "financial_management",
+                                                                                "power_bi_service"
+                                                                            ]
+                                                          },
+                                 "facilities_management_facility_operations":  {
+                                                                                   "name":  "Facility Operations",
+                                                                                   "description":  "Managing day-to-day facility operations",
+                                                                                   "icon":  "fa-screwdriver-wrench",
+                                                                                   "color":  "#F39C12",
+                                                                                   "parentId":  "facilities_management",
+                                                                                   "systemIds":  [
+                                                                                                     "facilities_management_platform"
+                                                                                                 ]
+                                                                               },
+                                 "facilities_management_procurement":  {
+                                                                           "name":  "Procurement",
+                                                                           "description":  "Managing procurement activities",
+                                                                           "icon":  "fa-cart-shopping",
+                                                                           "color":  "#F39C12",
+                                                                           "parentId":  "facilities_management",
+                                                                           "systemIds":  [
+                                                                                             "procurement_platform",
+                                                                                             "supplier_management_system",
+                                                                                             "contract_management_system"
+                                                                                         ]
+                                                                       },
+                                 "facilities_management_space_management":  {
+                                                                                "name":  "Space Management",
+                                                                                "description":  "Managing physical workspaces and office allocation",
+                                                                                "icon":  "fa-ruler-combined",
+                                                                                "color":  "#F39C12",
+                                                                                "parentId":  "facilities_management",
+                                                                                "systemIds":  [
+                                                                                                  "space_management_system",
+                                                                                                  "desk_booking_system"
+                                                                                              ]
+                                                                            },
+                                 "facilities_management":  {
+                                                               "name":  "Facilities Management",
+                                                               "description":  "Managing facilities and physical assets",
+                                                               "icon":  "fa-building-circle-check",
+                                                               "color":  "#E67E22",
+                                                               "childrenIds":  [
+                                                                                   "facilities_management_facility_operations",
+                                                                                   "facilities_management_procurement",
+                                                                                   "facilities_management_space_management"
+                                                                               ],
+                                                               "systemIds":  [
+                                                                                 "facilities_management_platform",
+                                                                                 "procurement_platform",
+                                                                                 "supplier_management_system",
+                                                                                 "contract_management_system",
+                                                                                 "space_management_system",
+                                                                                 "desk_booking_system"
+                                                                             ]
+                                                           },
+                                 "compliance_and_risk_management_regulatory_compliance":  {
+                                                                                              "name":  "Regulatory Compliance",
+                                                                                              "description":  "Managing regulatory compliance requirements",
+                                                                                              "icon":  "fa-balance-scale",
+                                                                                              "color":  "#AF7AC5",
+                                                                                              "parentId":  "compliance_and_risk_management",
+                                                                                              "systemIds":  [
+                                                                                                                "compliance_system",
+                                                                                                                "document_management",
+                                                                                                                "risk_management_system",
+                                                                                                                "regulatory_reporting_system"
+                                                                                                            ]
+                                                                                          },
+                                 "compliance_and_risk_management_risk_management":  {
+                                                                                        "name":  "Risk Management",
+                                                                                        "description":  "Managing business and financial risks",
+                                                                                        "icon":  "fa-exclamation-triangle",
+                                                                                        "color":  "#AF7AC5",
+                                                                                        "parentId":  "compliance_and_risk_management",
+                                                                                        "systemIds":  [
+                                                                                                          "risk_assessment_platform"
+                                                                                                      ]
+                                                                                    },
+                                 "compliance_and_risk_management":  {
+                                                                        "name":  "Compliance \u0026 Risk Management",
+                                                                        "description":  "Ensuring regulatory compliance and risk management",
+                                                                        "icon":  "fa-shield-alt",
+                                                                        "color":  "#9B59B6",
+                                                                        "childrenIds":  [
+                                                                                            "compliance_and_risk_management_regulatory_compliance",
+                                                                                            "compliance_and_risk_management_risk_management"
+                                                                                        ],
+                                                                        "systemIds":  [
+                                                                                          "compliance_system",
+                                                                                          "document_management",
+                                                                                          "risk_management_system",
+                                                                                          "regulatory_reporting_system",
+                                                                                          "risk_assessment_platform"
+                                                                                      ]
+                                                                    },
+                                 "customer_experience_marketing_automation":  {
+                                                                                  "name":  "Marketing Automation",
+                                                                                  "description":  "Automating marketing campaigns and communications",
+                                                                                  "icon":  "fa-bullseye",
+                                                                                  "color":  "#48C9B0",
+                                                                                  "parentId":  "customer_experience",
+                                                                                  "systemIds":  [
+                                                                                                    "marketing_automation"
+                                                                                                ]
+                                                                              },
+                                 "customer_experience_customer_support":  {
+                                                                              "name":  "Customer Support",
+                                                                              "description":  "Managing customer support and service requests",
+                                                                              "icon":  "fa-headset",
+                                                                              "color":  "#48C9B0",
+                                                                              "parentId":  "customer_experience",
+                                                                              "systemIds":  [
+                                                                                                "service_desk"
+                                                                                            ]
+                                                                          },
+                                 "customer_experience":  {
+                                                             "name":  "Customer Experience",
+                                                             "description":  "Managing the customer experience journey",
+                                                             "icon":  "fa-smile",
+                                                             "color":  "#1ABC9C",
+                                                             "childrenIds":  [
+                                                                                 "customer_experience_marketing_automation",
+                                                                                 "customer_experience_customer_support"
+                                                                             ],
+                                                             "systemIds":  [
+                                                                               "marketing_automation",
+                                                                               "service_desk"
+                                                                           ]
+                                                         },
+                                 "it_infrastructure_and_security_integration_services":  {
+                                                                                             "name":  "Integration Services",
+                                                                                             "description":  "Services enabling system integration",
+                                                                                             "icon":  "fa-exchange-alt",
+                                                                                             "color":  "#5D6D7E",
+                                                                                             "parentId":  "it_infrastructure_and_security",
+                                                                                             "systemIds":  [
+                                                                                                               "integration_platform",
+                                                                                                               "automation_platform",
+                                                                                                               "data_governance_tool",
+                                                                                                               "data_ingestion_pipelines",
+                                                                                                               "enterprise_api_gateway",
+                                                                                                               "data_integration_hub"
+                                                                                                           ]
+                                                                                         },
+                                 "it_infrastructure_and_security_cloud_infrastructure":  {
+                                                                                             "name":  "Cloud Infrastructure",
+                                                                                             "description":  "Managing cloud infrastructure and resources",
+                                                                                             "icon":  "fa-cloud",
+                                                                                             "color":  "#5D6D7E",
+                                                                                             "parentId":  "it_infrastructure_and_security",
+                                                                                             "systemIds":  [
+                                                                                                               "cloud_management_platform",
+                                                                                                               "iot_integration_layer"
+                                                                                                           ]
+                                                                                         },
+                                 "it_infrastructure_and_security_cybersecurity":  {
+                                                                                      "name":  "Cybersecurity",
+                                                                                      "description":  "Managing cybersecurity and data protection",
+                                                                                      "icon":  "fa-lock",
+                                                                                      "color":  "#5D6D7E",
+                                                                                      "parentId":  "it_infrastructure_and_security",
+                                                                                      "systemIds":  [
+                                                                                                        "security_operations_center",
+                                                                                                        "identity_management"
+                                                                                                    ]
+                                                                                  },
+                                 "it_infrastructure_and_security":  {
+                                                                        "name":  "IT Infrastructure \u0026 Security",
+                                                                        "description":  "Managing IT infrastructure and security",
+                                                                        "icon":  "fa-server",
+                                                                        "color":  "#34495E",
+                                                                        "childrenIds":  [
+                                                                                            "it_infrastructure_and_security_integration_services",
+                                                                                            "it_infrastructure_and_security_cloud_infrastructure",
+                                                                                            "it_infrastructure_and_security_cybersecurity"
+                                                                                        ],
+                                                                        "systemIds":  [
+                                                                                          "integration_platform",
+                                                                                          "automation_platform",
+                                                                                          "data_governance_tool",
+                                                                                          "data_ingestion_pipelines",
+                                                                                          "enterprise_api_gateway",
+                                                                                          "data_integration_hub",
+                                                                                          "cloud_management_platform",
+                                                                                          "iot_integration_layer",
+                                                                                          "security_operations_center",
+                                                                                          "identity_management"
+                                                                                      ]
+                                                                    },
+                                 "project_and_portfolio_management_project_management":  {
+                                                                                             "name":  "Project Management",
+                                                                                             "description":  "Managing individual projects",
+                                                                                             "icon":  "fa-project-diagram",
+                                                                                             "color":  "#F8C471",
+                                                                                             "parentId":  "project_and_portfolio_management",
+                                                                                             "systemIds":  [
+                                                                                                               "project_management_tool"
+                                                                                                           ]
+                                                                                         },
+                                 "project_and_portfolio_management_portfolio_management":  {
+                                                                                               "name":  "Portfolio Management",
+                                                                                               "description":  "Managing project portfolios",
+                                                                                               "icon":  "fa-layer-group",
+                                                                                               "color":  "#F8C471",
+                                                                                               "parentId":  "project_and_portfolio_management",
+                                                                                               "systemIds":  [
+                                                                                                                 "portfolio_management_system"
+                                                                                                             ]
+                                                                                           },
+                                 "project_and_portfolio_management":  {
+                                                                          "name":  "Project \u0026 Portfolio Management",
+                                                                          "description":  "Managing projects and project portfolios",
+                                                                          "icon":  "fa-tasks",
+                                                                          "color":  "#F39C12",
+                                                                          "childrenIds":  [
+                                                                                              "project_and_portfolio_management_project_management",
+                                                                                              "project_and_portfolio_management_portfolio_management"
+                                                                                          ],
                                                                           "systemIds":  [
-                                                                                            "property_360",
-                                                                                            "repairs_and_maintenance_system",
-                                                                                            "asset_management_system",
-                                                                                            "lease_management_platform"
+                                                                                            "project_management_tool",
+                                                                                            "portfolio_management_system"
                                                                                         ]
-                                                                      }
+                                                                      },
+                                 "global_research_and_advisory_market_research":  {
+                                                                                      "name":  "Market Research",
+                                                                                      "description":  "Conducting market research and analysis",
+                                                                                      "icon":  "fa-search",
+                                                                                      "color":  "#58D68D",
+                                                                                      "parentId":  "global_research_and_advisory",
+                                                                                      "systemIds":  [
+                                                                                                        "market_data_api"
+                                                                                                    ]
+                                                                                  },
+                                 "global_research_and_advisory_advisory_services":  {
+                                                                                        "name":  "Advisory Services",
+                                                                                        "description":  "Providing advisory services to clients",
+                                                                                        "icon":  "fa-handshake",
+                                                                                        "color":  "#58D68D",
+                                                                                        "parentId":  "global_research_and_advisory",
+                                                                                        "systemIds":  [
+                                                                                                          "client_advisory_platform"
+                                                                                                      ]
+                                                                                    },
+                                 "global_research_and_advisory":  {
+                                                                      "name":  "Global Research \u0026 Advisory",
+                                                                      "description":  "Global research and advisory services",
+                                                                      "icon":  "fa-globe",
+                                                                      "color":  "#2ECC71",
+                                                                      "childrenIds":  [
+                                                                                          "global_research_and_advisory_market_research",
+                                                                                          "global_research_and_advisory_advisory_services"
+                                                                                      ],
+                                                                      "systemIds":  [
+                                                                                        "market_data_api",
+                                                                                        "client_advisory_platform"
+                                                                                    ]
+                                                                  },
+                                 "data_platform_operational_data":  {
+                                                                        "name":  "Operational Data",
+                                                                        "description":  "Day-to-day transactional data systems",
+                                                                        "icon":  "fa-table",
+                                                                        "color":  "#3498DB",
+                                                                        "parentId":  "data_platform",
+                                                                        "systemIds":  [
+                                                                                          "oltp_operational_dbs",
+                                                                                          "operational_data_store"
+                                                                                      ]
+                                                                    },
+                                 "data_platform_analytical_data":  {
+                                                                       "name":  "Analytical Data",
+                                                                       "description":  "Systems for data warehousing and analytics",
+                                                                       "icon":  "fa-chart-column",
+                                                                       "color":  "#3498DB",
+                                                                       "parentId":  "data_platform",
+                                                                       "systemIds":  [
+                                                                                         "olap_data_warehouse",
+                                                                                         "data_lake",
+                                                                                         "machine_learning_services",
+                                                                                         "customer_insights_platform"
+                                                                                     ]
+                                                                   },
+                                 "data_platform_data_governance":  {
+                                                                       "name":  "Data Governance",
+                                                                       "description":  "Managing data quality, compliance and ownership",
+                                                                       "icon":  "fa-shield-alt",
+                                                                       "color":  "#3498DB",
+                                                                       "parentId":  "data_platform",
+                                                                       "systemIds":  [
+                                                                                         "data_governance",
+                                                                                         "master_data_management",
+                                                                                         "data_catalog",
+                                                                                         "data_quality_monitoring"
+                                                                                     ]
+                                                                   },
+                                 "data_platform_data_integration":  {
+                                                                        "name":  "Data Integration",
+                                                                        "description":  "Tools and systems for data movement and integration",
+                                                                        "icon":  "fa-exchange-alt",
+                                                                        "color":  "#3498DB",
+                                                                        "parentId":  "data_platform",
+                                                                        "systemIds":  [
+                                                                                          "data_integration_hub",
+                                                                                          "data_ingestion_pipelines"
+                                                                                      ]
+                                                                    },
+                                 "data_platform":  {
+                                                       "name":  "Data Platform",
+                                                       "description":  "Data storage, processing, and analytics capabilities",
+                                                       "icon":  "fa-database",
+                                                       "color":  "#2980B9",
+                                                       "childrenIds":  [
+                                                                           "data_platform_operational_data",
+                                                                           "data_platform_analytical_data",
+                                                                           "data_platform_data_governance",
+                                                                           "data_platform_data_integration"
+                                                                       ],
+                                                       "systemIds":  [
+                                                                         "oltp_operational_dbs",
+                                                                         "operational_data_store",
+                                                                         "olap_data_warehouse",
+                                                                         "data_lake",
+                                                                         "machine_learning_services",
+                                                                         "customer_insights_platform",
+                                                                         "data_governance",
+                                                                         "master_data_management",
+                                                                         "data_catalog",
+                                                                         "data_quality_monitoring",
+                                                                         "data_integration_hub",
+                                                                         "data_ingestion_pipelines"
+                                                                     ]
+                                                   },
+                                 "human_resources_personnel_management":  {
+                                                                              "name":  "Personnel Management",
+                                                                              "description":  "Managing personnel records and activities",
+                                                                              "icon":  "fa-user-tie",
+                                                                              "color":  "#F1948A",
+                                                                              "parentId":  "human_resources",
+                                                                              "systemIds":  [
+                                                                                                "workday",
+                                                                                                "payroll_system"
+                                                                                            ]
+                                                                          },
+                                 "human_resources_learning_and_development":  {
+                                                                                  "name":  "Learning \u0026 Development",
+                                                                                  "description":  "Managing learning and development activities",
+                                                                                  "icon":  "fa-graduation-cap",
+                                                                                  "color":  "#F1948A",
+                                                                                  "parentId":  "human_resources",
+                                                                                  "systemIds":  [
+                                                                                                    "learning_management_system"
+                                                                                                ]
+                                                                              },
+                                 "human_resources":  {
+                                                         "name":  "Human Resources",
+                                                         "description":  "Managing human resources and personnel",
+                                                         "icon":  "fa-users-cog",
+                                                         "color":  "#E74C3C",
+                                                         "childrenIds":  [
+                                                                             "human_resources_personnel_management",
+                                                                             "human_resources_learning_and_development"
+                                                                         ],
+                                                         "systemIds":  [
+                                                                           "workday",
+                                                                           "payroll_system",
+                                                                           "learning_management_system"
+                                                                       ]
+                                                     },
+                                 "integration_platform_enterprise_integration":  {
+                                                                                     "name":  "Enterprise Integration",
+                                                                                     "description":  "Core integration systems",
+                                                                                     "icon":  "fa-plug",
+                                                                                     "color":  "#FF8A8A",
+                                                                                     "parentId":  "integration_platform",
+                                                                                     "systemIds":  [
+                                                                                                       "integration_platform",
+                                                                                                       "enterprise_api_gateway"
+                                                                                                   ]
+                                                                                 },
+                                 "integration_platform_business_process_automation":  {
+                                                                                          "name":  "Business Process Automation",
+                                                                                          "description":  "Process automation and workflow tools",
+                                                                                          "icon":  "fa-robot",
+                                                                                          "color":  "#FF8A8A",
+                                                                                          "parentId":  "integration_platform",
+                                                                                          "systemIds":  [
+                                                                                                            "automation_platform",
+                                                                                                            "rpa_platform"
+                                                                                                        ]
+                                                                                      },
+                                 "integration_platform_event_processing":  {
+                                                                               "name":  "Event Processing",
+                                                                               "description":  "Event-driven architecture components",
+                                                                               "icon":  "fa-bolt",
+                                                                               "color":  "#FF8A8A",
+                                                                               "parentId":  "integration_platform",
+                                                                               "systemIds":  [
+                                                                                                 "event_hub"
+                                                                                             ]
+                                                                           },
+                                 "integration_platform":  {
+                                                              "name":  "Integration Platform",
+                                                              "description":  "Systems that enable integration between applications",
+                                                              "icon":  "fa-network-wired",
+                                                              "color":  "#FF6B6B",
+                                                              "childrenIds":  [
+                                                                                  "integration_platform_enterprise_integration",
+                                                                                  "integration_platform_business_process_automation",
+                                                                                  "integration_platform_event_processing"
+                                                                              ],
+                                                              "systemIds":  [
+                                                                                "integration_platform",
+                                                                                "enterprise_api_gateway",
+                                                                                "automation_platform",
+                                                                                "rpa_platform",
+                                                                                "event_hub"
+                                                                            ]
+                                                          },
+                                 "user_interface_platforms_user_portals":  {
+                                                                               "name":  "User Portals",
+                                                                               "description":  "Web portals for users and customers",
+                                                                               "icon":  "fa-window-maximize",
+                                                                               "color":  "#5DADE2",
+                                                                               "parentId":  "user_interface_platforms",
+                                                                               "systemIds":  [
+                                                                                                 "unified_interface_spog",
+                                                                                                 "customer_self_service_portal"
+                                                                                             ]
+                                                                           },
+                                 "user_interface_platforms_mobile_applications":  {
+                                                                                      "name":  "Mobile Applications",
+                                                                                      "description":  "Mobile interfaces for users and customers",
+                                                                                      "icon":  "fa-mobile-alt",
+                                                                                      "color":  "#5DADE2",
+                                                                                      "parentId":  "user_interface_platforms",
+                                                                                      "systemIds":  [
+                                                                                                        "mobile_app_tenant_app"
+                                                                                                    ]
+                                                                                  },
+                                 "user_interface_platforms_analytics_dashboards":  {
+                                                                                       "name":  "Analytics Dashboards",
+                                                                                       "description":  "Business intelligence dashboards",
+                                                                                       "icon":  "fa-chart-pie",
+                                                                                       "color":  "#5DADE2",
+                                                                                       "parentId":  "user_interface_platforms",
+                                                                                       "systemIds":  [
+                                                                                                         "power_bi_dashboards",
+                                                                                                         "power_bi_reports"
+                                                                                                     ]
+                                                                                   },
+                                 "user_interface_platforms":  {
+                                                                  "name":  "User Interface Platforms",
+                                                                  "description":  "User-facing interfaces and portals",
+                                                                  "icon":  "fa-desktop",
+                                                                  "color":  "#3498DB",
+                                                                  "childrenIds":  [
+                                                                                      "user_interface_platforms_user_portals",
+                                                                                      "user_interface_platforms_mobile_applications",
+                                                                                      "user_interface_platforms_analytics_dashboards"
+                                                                                  ],
+                                                                  "systemIds":  [
+                                                                                    "unified_interface_spog",
+                                                                                    "customer_self_service_portal",
+                                                                                    "mobile_app_tenant_app",
+                                                                                    "power_bi_dashboards",
+                                                                                    "power_bi_reports"
+                                                                                ]
+                                                              }
                              },
     "systems":  {
                     "property_360":  {
@@ -108,11 +752,8 @@
                                                            }
                                                        ],
                                          "dataEntities":  [
-                                                              "repairs_request",
-                                                              "asset_record",
-                                                              "lease_agreement",
-                                                              "customer_record",
-                                                              "financial_transaction"
+                                                              "property",
+                                                              "location"
                                                           ],
                                          "platformId":  "custom_development_platform",
                                          "deliveryProgramId":  "digital_transformation_2025"
@@ -199,7 +840,8 @@
                                                       ],
                                             "deploymentType":  "Cloud",
                                             "dataEntities":  [
-                                                                 "customer_record"
+                                                                 "agent",
+                                                                 "person"
                                                              ],
                                             "contracts":  [
                                                               {
@@ -595,7 +1237,9 @@
                                           ],
                                 "deploymentType":  "SaaS",
                                 "dataEntities":  [
-                                                     "customer_record"
+                                                     "person",
+                                                     "company",
+                                                     "agent"
                                                  ],
                                 "contracts":  [
                                                   {
@@ -2531,7 +3175,9 @@
                                                                  ],
                                                        "deploymentType":  "Cloud",
                                                        "dataEntities":  [
-                                                                            "customer_record"
+                                                                            "property",
+                                                                            "location",
+                                                                            "company"
                                                                         ],
                                                        "contracts":  [
                                                                          {
@@ -3015,7 +3661,10 @@
                                                           ],
                                                 "deploymentType":  "Cloud",
                                                 "dataEntities":  [
-                                                                     "customer_record"
+                                                                     "transaction",
+                                                                     "property",
+                                                                     "company",
+                                                                     "person"
                                                                  ],
                                                 "contracts":  [
                                                                   {
@@ -3116,41 +3765,283 @@
                                 }
                 },
     "dataEntities":  {
-                         "repairs_request":  {
-                                                 "name":  "Repairs Request",
-                                                 "description":  "Record of property repair and maintenance requests",
-                                                 "classification":  "Internal",
-                                                 "groupId":  "property_management",
-                                                 "attributes":  [
-                                                                    {
-                                                                        "name":  "requestId",
-                                                                        "type":  "string",
-                                                                        "description":  "Unique identifier for the repair request"
-                                                                    },
-                                                                    {
-                                                                        "name":  "propertyId",
-                                                                        "type":  "string",
-                                                                        "description":  "Associated property identifier"
-                                                                    },
-                                                                    {
-                                                                        "name":  "status",
-                                                                        "type":  "string",
-                                                                        "description":  "Current status of the repair request"
-                                                                    }
-                                                                ],
-                                                 "relationships":  [
-                                                                       {
-                                                                           "targetEntityId":  "property_record",
-                                                                           "type":  "ManyToOne",
-                                                                           "description":  "Property where repair is needed"
-                                                                       },
-                                                                       {
-                                                                           "targetEntityId":  "service_request",
-                                                                           "type":  "OneToOne",
-                                                                           "description":  "Associated service request"
-                                                                       }
-                                                                   ]
-                                             }
+                         "property":  {
+                                          "name":  "Property",
+                                          "description":  "Core property information entity",
+                                          "classification":  "Internal",
+                                          "groupId":  "property_management",
+                                          "attributes":  [
+                                                             {
+                                                                 "description":  "Attribute for id",
+                                                                 "name":  "id",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for address",
+                                                                 "name":  "address",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for type",
+                                                                 "name":  "type",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for price",
+                                                                 "name":  "price",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for status",
+                                                                 "name":  "status",
+                                                                 "type":  "string"
+                                                             }
+                                                         ],
+                                          "relationships":  [
+                                                                {
+                                                                    "description":  "Relationship to Location",
+                                                                    "targetEntityId":  "location",
+                                                                    "type":  "ManyToOne"
+                                                                },
+                                                                {
+                                                                    "description":  "Relationship to Agent",
+                                                                    "targetEntityId":  "agent",
+                                                                    "type":  "ManyToOne"
+                                                                },
+                                                                {
+                                                                    "description":  "Relationship to Images",
+                                                                    "targetEntityId":  "images",
+                                                                    "type":  "ManyToOne"
+                                                                },
+                                                                {
+                                                                    "description":  "Relationship to Features",
+                                                                    "targetEntityId":  "features",
+                                                                    "type":  "ManyToOne"
+                                                                }
+                                                            ],
+                                          "icon":  "fa-building",
+                                          "color":  "#4A90E2"
+                                      },
+                         "person":  {
+                                        "name":  "Person",
+                                        "description":  "Individual contact information",
+                                        "classification":  "Internal",
+                                        "groupId":  "property_management",
+                                        "attributes":  [
+                                                           {
+                                                               "description":  "Attribute for id",
+                                                               "name":  "id",
+                                                               "type":  "string"
+                                                           },
+                                                           {
+                                                               "description":  "Attribute for name",
+                                                               "name":  "name",
+                                                               "type":  "string"
+                                                           },
+                                                           {
+                                                               "description":  "Attribute for email",
+                                                               "name":  "email",
+                                                               "type":  "string"
+                                                           },
+                                                           {
+                                                               "description":  "Attribute for phone",
+                                                               "name":  "phone",
+                                                               "type":  "string"
+                                                           }
+                                                       ],
+                                        "relationships":  [
+                                                              {
+                                                                  "description":  "Relationship to Company",
+                                                                  "targetEntityId":  "company",
+                                                                  "type":  "ManyToOne"
+                                                              },
+                                                              {
+                                                                  "description":  "Relationship to Role",
+                                                                  "targetEntityId":  "role",
+                                                                  "type":  "ManyToOne"
+                                                              }
+                                                          ],
+                                        "icon":  "fa-user",
+                                        "color":  "#50C878"
+                                    },
+                         "company":  {
+                                         "name":  "Company",
+                                         "description":  "Organization information",
+                                         "classification":  "Internal",
+                                         "groupId":  "property_management",
+                                         "attributes":  [
+                                                            {
+                                                                "description":  "Attribute for id",
+                                                                "name":  "id",
+                                                                "type":  "string"
+                                                            },
+                                                            {
+                                                                "description":  "Attribute for name",
+                                                                "name":  "name",
+                                                                "type":  "string"
+                                                            },
+                                                            {
+                                                                "description":  "Attribute for type",
+                                                                "name":  "type",
+                                                                "type":  "string"
+                                                            },
+                                                            {
+                                                                "description":  "Attribute for status",
+                                                                "name":  "status",
+                                                                "type":  "string"
+                                                            }
+                                                        ],
+                                         "relationships":  [
+                                                               {
+                                                                   "description":  "Relationship to Person",
+                                                                   "targetEntityId":  "person",
+                                                                   "type":  "ManyToOne"
+                                                               },
+                                                               {
+                                                                   "description":  "Relationship to Location",
+                                                                   "targetEntityId":  "location",
+                                                                   "type":  "ManyToOne"
+                                                               }
+                                                           ],
+                                         "icon":  "fa-building-user",
+                                         "color":  "#FF6B6B"
+                                     },
+                         "location":  {
+                                          "name":  "Location",
+                                          "description":  "Geographic location information",
+                                          "classification":  "Internal",
+                                          "groupId":  "property_management",
+                                          "attributes":  [
+                                                             {
+                                                                 "description":  "Attribute for id",
+                                                                 "name":  "id",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for address",
+                                                                 "name":  "address",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for city",
+                                                                 "name":  "city",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for country",
+                                                                 "name":  "country",
+                                                                 "type":  "string"
+                                                             },
+                                                             {
+                                                                 "description":  "Attribute for coordinates",
+                                                                 "name":  "coordinates",
+                                                                 "type":  "string"
+                                                             }
+                                                         ],
+                                          "relationships":  [
+                                                                {
+                                                                    "description":  "Relationship to Property",
+                                                                    "targetEntityId":  "property",
+                                                                    "type":  "ManyToOne"
+                                                                }
+                                                            ],
+                                          "icon":  "fa-map-marker-alt",
+                                          "color":  "#FFD700"
+                                      },
+                         "transaction":  {
+                                             "name":  "Transaction",
+                                             "description":  "Property transaction details",
+                                             "classification":  "Internal",
+                                             "groupId":  "property_management",
+                                             "attributes":  [
+                                                                {
+                                                                    "description":  "Attribute for id",
+                                                                    "name":  "id",
+                                                                    "type":  "string"
+                                                                },
+                                                                {
+                                                                    "description":  "Attribute for type",
+                                                                    "name":  "type",
+                                                                    "type":  "string"
+                                                                },
+                                                                {
+                                                                    "description":  "Attribute for date",
+                                                                    "name":  "date",
+                                                                    "type":  "string"
+                                                                },
+                                                                {
+                                                                    "description":  "Attribute for value",
+                                                                    "name":  "value",
+                                                                    "type":  "string"
+                                                                },
+                                                                {
+                                                                    "description":  "Attribute for status",
+                                                                    "name":  "status",
+                                                                    "type":  "string"
+                                                                }
+                                                            ],
+                                             "relationships":  [
+                                                                   {
+                                                                       "description":  "Relationship to Property",
+                                                                       "targetEntityId":  "property",
+                                                                       "type":  "ManyToOne"
+                                                                   },
+                                                                   {
+                                                                       "description":  "Relationship to Client",
+                                                                       "targetEntityId":  "client",
+                                                                       "type":  "ManyToOne"
+                                                                   },
+                                                                   {
+                                                                       "description":  "Relationship to Agent",
+                                                                       "targetEntityId":  "agent",
+                                                                       "type":  "ManyToOne"
+                                                                   }
+                                                               ],
+                                             "icon":  "fa-exchange-alt",
+                                             "color":  "#9B59B6"
+                                         },
+                         "agent":  {
+                                       "name":  "Agent",
+                                       "description":  "Knight Frank agent information",
+                                       "classification":  "Internal",
+                                       "groupId":  "property_management",
+                                       "attributes":  [
+                                                          {
+                                                              "description":  "Attribute for id",
+                                                              "name":  "id",
+                                                              "type":  "string"
+                                                          },
+                                                          {
+                                                              "description":  "Attribute for name",
+                                                              "name":  "name",
+                                                              "type":  "string"
+                                                          },
+                                                          {
+                                                              "description":  "Attribute for specialization",
+                                                              "name":  "specialization",
+                                                              "type":  "string"
+                                                          }
+                                                      ],
+                                       "relationships":  [
+                                                             {
+                                                                 "description":  "Relationship to Person",
+                                                                 "targetEntityId":  "person",
+                                                                 "type":  "ManyToOne"
+                                                             },
+                                                             {
+                                                                 "description":  "Relationship to Property",
+                                                                 "targetEntityId":  "property",
+                                                                 "type":  "ManyToOne"
+                                                             },
+                                                             {
+                                                                 "description":  "Relationship to Transaction",
+                                                                 "targetEntityId":  "transaction",
+                                                                 "type":  "ManyToOne"
+                                                             }
+                                                         ],
+                                       "icon":  "fa-user-tie",
+                                       "color":  "#3498DB"
+                                   }
                      },
     "platforms":  {
                       "property_management_platform":  {
