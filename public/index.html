@@ -1,79 +1,78 @@
-<!-- Home Page -->
-<div include-html="includes/header.html"></div>
-<div include-html="includes/navigation.html"></div>
-
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <h1>Knight Frank Enterprise Architecture Overview</h1>
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Welcome to the EA Portal</h5>
-                    <p class="card-text">
-                        This portal provides a comprehensive view of Knight Frank's Enterprise Architecture.
-                        Use the navigation above to explore different aspects of our architecture.
-                    </p>
-                    
-                    <div class="row mt-4">
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-project-diagram fa-3x mb-3 text-primary"></i>
-                                    <h5 class="card-title">EA View</h5>
-                                    <p class="card-text">Comprehensive overview of our enterprise architecture</p>
-                                    <a href="ea-view.html" class="btn btn-outline-primary">Explore</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-cubes fa-3x mb-3 text-success"></i>
-                                    <h5 class="card-title">Business Capabilities</h5>
-                                    <p class="card-text">Explore our core business capabilities and functions</p>
-                                    <a href="business-capabilities.html" class="btn btn-outline-success">Explore</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-network-wired fa-3x mb-3 text-info"></i>
-                                    <h5 class="card-title">Entity Relationships</h5>
-                                    <p class="card-text">View relationships between key business entities</p>
-                                    <a href="entity-relationships.html" class="btn btn-outline-info">Explore</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-exchange-alt fa-3x mb-3 text-warning"></i>
-                                    <h5 class="card-title">Data Flow</h5>
-                                    <p class="card-text">Visualize how data flows across our systems</p>
-                                    <a href="data-flow.html" class="btn btn-outline-warning">Explore</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-server fa-3x mb-3 text-danger"></i>
-                                    <h5 class="card-title">System Clusters</h5>
-                                    <p class="card-text">Explore our system clusters and dependencies</p>
-                                    <a href="system-clusters.html" class="btn btn-outline-danger">Explore</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knight Frank Enterprise Architecture</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <!-- Navbar will be loaded here -->
+  <div id="navbar-placeholder"></div>
+  <div style="height:70px;"></div> <!-- Spacer to push content below fixed navbar -->
+  <main class="container py-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fa-solid fa-sitemap fa-3x mb-3"></i>
+            <h5 class="card-title">Capabilities</h5>
+            <p class="card-text">Explore the business capabilities hierarchy.</p>
+            <a href="capabilities.html" class="btn btn-primary">View Capabilities</a>
+          </div>
         </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fa-solid fa-server fa-3x mb-3"></i>
+            <h5 class="card-title">Systems</h5>
+            <p class="card-text">Browse enterprise systems and their relationships.</p>
+            <a href="systems.html" class="btn btn-primary">View Systems</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fa-solid fa-coins fa-3x mb-3"></i>
+            <h5 class="card-title">Costs</h5>
+            <p class="card-text">Visualize system costs and investments.</p>
+            <a href="costs.html" class="btn btn-primary">View Costs</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fa-solid fa-map fa-3x mb-3"></i>
+            <h5 class="card-title">Data Map</h5>
+            <p class="card-text">See geographical usage and data distribution.</p>
+            <a href="map.html" class="btn btn-primary">View Map</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fa-solid fa-file-contract fa-3x mb-3"></i>
+            <h5 class="card-title">Contracts</h5>
+            <p class="card-text">Track contract timelines and risk status.</p>
+            <a href="contracts.html" class="btn btn-primary">View Contracts</a>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-
-<script src="js/utils.js"></script>
-
-<div include-html="includes/footer.html"></div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/theme-toggle.js"></script>
+  <script>
+    // Load navbar and footer partials
+    fetch('/partials/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar-placeholder').innerHTML = html);
+    fetch('/partials/footer.html').then(r => r.text()).then(html => document.getElementById('footer-placeholder').innerHTML = html);
+  </script>
+</body>
+</html>

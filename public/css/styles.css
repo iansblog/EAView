@@ -1,0 +1,10 @@
+/* Custom styles placeholder */
+body.bg-dark {
+  background-color: #181a1b !important;
+}
+.card {
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 0 0.5rem #007bff33;
+}
