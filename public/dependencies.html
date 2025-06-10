@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dependencies - Knight Frank EA</title>
+  <title>Data Entities Dependencies - Knight Frank EA</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="/css/styles.css" rel="stylesheet">
 </head>
-<body>
+<body style="padding-top: 70px;">
   <div id="navbar-placeholder"></div>
   <main class="container py-5">
-    <h1 class="mb-4"><i class="fa-solid fa-network-wired"></i> Dependencies</h1>
+    <h1 class="mb-4"><i class="fa-solid fa-network-wired"></i> Data Entities Dependencies</h1>
     <div id="dependencies-heatmap" class="bg-body p-3 rounded shadow-sm mb-4" style="min-height:300px;"></div>
-    <div id="dependencies-network" class="bg-body p-3 rounded shadow-sm" style="min-height:300px;"></div>
+    <div id="dependency-info-row" class="row" style="display:none;">
+      <div class="col-md-6" id="dependency-info-text"></div>
+      <div class="col-md-6" id="dependency-info-visual"></div>
+    </div>
   </main>
   <div id="footer-placeholder"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="/js/visualizations.js"></script>
-  <script src="/js/theme-toggle.js"></script>
+  <script src="/js/dependencies.js"></script>
   <script>
     fetch('/partials/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar-placeholder').innerHTML = html);
     fetch('/partials/footer.html').then(r => r.text()).then(html => document.getElementById('footer-placeholder').innerHTML = html);

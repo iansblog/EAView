@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Architecture Catalog Data Documentation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  <style>
+    pre code.language-mermaid { display: block; background: #f8f9fa; border-radius: 4px; padding: 1em; margin-bottom: 1em; }
+  </style>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+  <div style="height:70px;"></div>
+  <main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="mb-0">Enterprise Architecture Catalog Data Documentation</h1>
+      <a href="data/asis.json" class="btn btn-outline-primary" download>
+        <i class="fa-solid fa-download me-2"></i>Download asis.json
+      </a>
+    </div>
+    <hr>
+    <div class="markdown-body">
+      <!-- BEGIN README CONTENT -->
+      <h2>Enterprise Architecture Catalog JSON Documentation</h2>
+      <p>This document describes the structure and relationships within the <code>asis.json</code> file, which serves as the core data model for the Enterprise Architecture Catalog.</p>
+      <h3>Overview</h3>
+      <p>The <code>asis.json</code> file represents a comprehensive enterprise architecture catalog that includes:</p>
+      <ul>
+        <li>Business capabilities</li>
+        <li>Systems and applications</li>
+        <li>Data entities</li>
+        <li>Platforms</li>
+        <li>Delivery programs</li>
+        <li>Suppliers</li>
+        <li>Resellers</li>
+      </ul>
+      <h3>Structure</h3>
+      <pre><code class="language-mermaid">graph TD
+    A[Enterprise Architecture Catalog] --> B[Metadata]
+    A --> C[Business Capabilities]
+    A --> D[Systems]
+    A --> E[Data Entities]
+    A --> F[Platforms]
+    A --> G[Delivery Programs]
+    A --> H[Suppliers]
+    A --> I[Resellers]
+    D --> J[Supplier History]
+    D --> K[Contracts]
+    D --> L[Data Entities]
+    D --> M[Business Capabilities]
+    F --> N[Platform Components]
+    G --> O[Program Deliverables]
+</code></pre>
+      <h4>Relationships Diagram</h4>
+      <pre><code class="language-mermaid">erDiagram
+    SYSTEM ||--o{ DATA_ENTITY : uses
+    SYSTEM ||--o{ BUSINESS_CAPABILITY : implements
+    SYSTEM ||--o{ SUPPLIER : has
+    SYSTEM ||--o{ RESELLER : has
+    SYSTEM ||--o{ CONTRACT : has
+    PLATFORM ||--o{ SYSTEM : contains
+    PLATFORM ||--o{ PLATFORM : includes
+    DELIVERY_PROGRAM ||--o{ SYSTEM : delivers
+    DELIVERY_PROGRAM ||--o{ PLATFORM : delivers
+    BUSINESS_CAPABILITY ||--o{ BUSINESS_CAPABILITY : parent-child
+</code></pre>
+      <h4>Component Structure</h4>
+      <pre><code class="language-mermaid">graph LR
+    A[Platform] --> B[Components]
+    B --> C[Systems]
+    B --> D[Platforms]
+    E[System] --> F[Data Entities]
+    E --> G[Business Capabilities]
+    E --> H[Supplier History]
+    H --> I[Supplier]
+    H --> J[Reseller]
+    H --> K[Contract]
+</code></pre>
+      <h3>Important Notes</h3>
+      <ol>
+        <li>All dates in the JSON should be in UTC format with "Z" suffix (e.g., "2025-06-07T00:00:00Z")</li>
+        <li>Components can be nested (platforms can contain other platforms)</li>
+        <li>Systems must have at least one business capability and one data entity</li>
+        <li>Platforms can include both systems and other platforms</li>
+        <li>Supplier and reseller history is tracked per system as a list of contract periods</li>
+      </ol>
+      <h3>JSON Schema</h3>
+      <pre><code class="language-json">{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["metadata", "businessCapabilities", "systems", "dataEntities", "platforms", "deliveryPrograms", "suppliers", "resellers"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["name", "description", "version", "lastUpdated"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "version": { "type": "string" },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Must be in UTC format with Z suffix"
+        }
+      }
+    },
+    "businessCapabilities": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name", "description", "icon", "color"],
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "icon": { "type": "string" },
+            "color": { "type": "string" },
+            "childrenIds": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "parentId": { "type": "string" }
+          }
+        }
+      }
+    },
+    "systems": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name", "description", "status", "criticality", "deploymentType", "dataEntities", "businessCapabilities", "supplierHistory"],
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "status": {
+              "type": "string",
+              "enum": ["Planning", "Development", "Testing", "Production", "Retired"]
+            },
+            "criticality": {
+              "type": "string",
+              "enum": ["Critical", "High", "Medium", "Low"]
+            },
+            "deploymentType": {
+              "type": "string",
+              "enum": ["SaaS", "Cloud", "OnPremise", "Hybrid"]
+            },
+            "dataEntities": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string" }
+            },
+            "businessCapabilities": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string" }
+            },
+            "supplierHistory": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["supplierId", "contractId", "contractValue", "startDate", "endDate"],
+                "properties": {
+                  "supplierId": { "type": "string" },
+                  "resellerId": { "type": "string" },
+                  "contractId": { "type": "string" },
+                  "contractValue": { "type": "string" },
+                  "startDate": { "type": "string", "format": "date" },
+                  "endDate": { "type": "string", "format": "date" },
+                  "notes": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dataEntities": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name", "description", "classification"],
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "classification": {
+              "type": "string",
+              "enum": ["Public", "Internal", "Confidential", "Sensitive"]
+            },
+            "icon": { "type": "string" },
+            "color": { "type": "string" },
+            "attributes": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "relationships": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "platforms": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name", "description", "category", "vendor"],
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "category": {
+              "type": "string",
+              "enum": ["ApplicationPlatform", "DataPlatform", "IntegrationPlatform", "InfrastructurePlatform"]
+            },
+            "vendor": { "type": "string" },
+            "components": {
+              "type": "object",
+              "properties": {
+                "systems": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "platforms": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            },
+            "systemIds": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "deliveryPrograms": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name", "description", "status", "startDate", "endDate", "deliverables", "projects"],
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "status": {
+              "type": "string",
+              "enum": ["Planning", "InProgress", "Completed", "OnHold", "Cancelled"]
+            },
+            "startDate": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Must be in UTC format with Z suffix"
+            },
+            "endDate": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Must be in UTC format with Z suffix"
+            },
+            "budget": { "type": "string" },
+            "sponsor": { "type": "string" },
+            "projects": {
+              "type": "object",
+              "patternProperties": {
+                "^.*$": {
+                  "type": "object",
+                  "required": ["name", "status", "startDate", "endDate", "cost"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "description": { "type": "string" },
+                    "status": {
+                      "type": "string",
+                      "enum": ["Planning", "InProgress", "Completed", "OnHold", "Cancelled"]
+                    },
+                    "startDate": { "type": "string", "format": "date-time" },
+                    "endDate": { "type": "string", "format": "date-time" },
+                    "cost": { "type": "string" },
+                    "manager": { "type": "string" },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "objectives": { "type": "string" },
+                        "stakeholders": { "type": "string" },
+                        "notes": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "deliverables": {
+              "type": "object",
+              "properties": {
+                "systems": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "platforms": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            },
+            "milestones": {
+              "type": "array",
+              "items": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
+    "suppliers": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "contact": { "type": "string" },
+            "email": { "type": "string" },
+            "phone": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "resellers": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "contact": { "type": "string" },
+            "email": { "type": "string" },
+            "phone": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+      <!-- END README CONTENT -->
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Load navbar and footer partials
+    fetch('/partials/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar-placeholder').innerHTML = html);
+    fetch('/partials/footer.html').then(r => r.text()).then(html => document.getElementById('footer-placeholder').innerHTML = html);
+    // Render Mermaid diagrams
+    window.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('code.language-mermaid').forEach(function(block) {
+        var pre = block.parentElement;
+        var container = document.createElement('div');
+        container.className = 'mermaid';
+        container.textContent = block.textContent;
+        pre.parentNode.replaceChild(container, pre);
+      });
+    });
+  </script>
+</body>
+</html>

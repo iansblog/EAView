@@ -1,10 +1,27 @@
 /* Custom styles placeholder */
 body.bg-dark {
   background-color: #181a1b !important;
+  color: #f8f9fa !important;
+}
+body.bg-light {
+  background-color: #fff !important;
+  color: #212529 !important;
+}
+.bg-body.bg-dark, .card.bg-dark, .table.bg-dark, .rounded.bg-dark, .shadow-sm.bg-dark {
+  background-color: #23272b !important;
+  color: #f8f9fa !important;
+}
+.bg-body.bg-light, .card.bg-light, .table.bg-light, .rounded.bg-light, .shadow-sm.bg-light {
+  background-color: #fff !important;
+  color: #212529 !important;
 }
 .card {
   transition: box-shadow 0.2s;
 }
 .card:hover {
   box-shadow: 0 0 0.5rem #007bff33;
+}
+/* Utility for dark mode border */
+.border-darkmode {
+  border-color: #444 !important;
 }
