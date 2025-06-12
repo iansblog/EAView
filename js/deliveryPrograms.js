@@ -70,23 +70,36 @@ function renderProgramGanttChartForId(projects, ganttDivId) {
   projects.forEach(proj => {
     if (proj.endDate) withEnd.push(proj);
     else inPlanning.push(proj);
-  });
-  // Prepare data for Gantt (only those with end dates)
-  const bars = withEnd.map(proj => {
-    let start = proj.startDate ? new Date(proj.startDate) : null;
-    let end = proj.endDate ? new Date(proj.endDate) : null;
-    return {
-      id: proj.id,
-      name: proj.name,
-      owner: proj.manager || proj.owner,
-      status: proj.status,
-      criticality: proj.criticality,
-      start,
-      end,
-      description: proj.description,
-      cost: proj.cost
-    };
-  });
+  });  // Prepare data for Gantt (only those with valid start and end dates)
+  const bars = withEnd
+    .map((proj, index) => {
+      const start = proj.startDate ? new Date(proj.startDate) : null;
+      const end = proj.endDate ? new Date(proj.endDate) : null;
+      if (!start || isNaN(start) || !end || isNaN(end)) return null;
+      
+      // Debug info on project data structure
+      console.log(`Project ${index}:`, {
+        name: proj.name,
+        status: proj.status,
+        startDate: proj.startDate,
+        endDate: proj.endDate,
+        id: proj.id || `project-${index}`
+      });
+      // Create a new object with all original properties
+      // We need to handle the possibility of duplicate names
+      const barData = {
+        ...proj,  // First copy all original properties
+        id: proj.id || `project-${index}`, // Keep unique ID for internal use
+        start: start,  // Add formatted date objects
+        end: end,
+        // Add display name if needed (for future use)
+        displayName: proj.name
+      };
+      
+      return barData;
+    })
+    .filter(Boolean);
+  console.log('Gantt bars:', bars);
   // Responsive width: use parent card's width, max 100%
   const card = ganttDiv.closest('.card');
   let width = 700;
@@ -124,9 +137,12 @@ function renderProgramGanttChartForId(projects, ganttDivId) {
   // X scale (time)
   const minDate = d3.min(bars, d => d.start);
   const maxDate = d3.max(bars, d => d.end);
-  const x = d3.scaleTime().domain([minDate, maxDate]).range([margin.left, width - margin.right]);
-  // Y scale (projects)
-  const y = d3.scaleBand().domain(bars.map(d => d.name)).range([margin.top, height - margin.bottom]).padding(0.2);
+  const x = d3.scaleTime().domain([minDate, maxDate]).range([margin.left, width - margin.right]);  // Y scale (projects) - always use name for display but id for positioning
+  // Use names for y-axis display but keep unique IDs for positioning
+  const yDomain = bars.map(d => d.name);
+  // Debug Y domain to see if there are duplicates
+  console.log('Y domain:', yDomain);
+  const y = d3.scaleBand().domain(yDomain).range([margin.top, height - margin.bottom]).padding(0.2);
   // X axis
   svg.append('g')
     .attr('transform', `translate(0,${margin.top - 10})`)
@@ -134,31 +150,62 @@ function renderProgramGanttChartForId(projects, ganttDivId) {
   // Y axis
   svg.append('g')
     .attr('transform', `translate(${margin.left - 10},0)`)
-    .call(d3.axisLeft(y));
-  // Bars
-  svg.append('g')
-    .selectAll('rect')
+    .call(d3.axisLeft(y));  // Bars - create a group for each bar with text and rect
+  const barGroups = svg.selectAll('.bar-group')
     .data(bars)
-    .join('rect')
-    .attr('x', d => x(d.start))
-    .attr('y', d => y(d.name))
-    .attr('width', d => x(d.end) - x(d.start))
-    .attr('height', y.bandwidth())
-    .attr('fill', d => statusColor[d.status] || '#bbb')
-    .attr('cursor', 'pointer')
+    .join('g')
+    .attr('class', d => `bar-group bar-${d.status}`)
     .on('click', function(event, d) {
+      console.log('Bar group clicked:', d.name, d.status);
       showProjectDetails(d);
     });
-  // Labels
-  svg.append('g')
-    .selectAll('text.label')
-    .data(bars)
-    .join('text')
+      // Add the rectangle bars
+  barGroups.append('rect')
+    .attr('x', d => x(d.start))
+    .attr('y', d => y(d.name))
+    .attr('width', d => {
+      const w = x(d.end) - x(d.start);
+      // Ensure minimum width of 20px for better clickability
+      return Math.max(w, 20); 
+    })
+    .attr('height', y.bandwidth())
+    .attr('fill', d => statusColor[d.status] || '#bbb')
+    .attr('stroke', '#444')
+    .attr('stroke-width', 0.5)
+    .attr('cursor', 'pointer')
+    .on('mouseover', function(event, d) {
+      // Highlight on hover to see which bars are interactive
+      d3.select(this).attr('stroke-width', 2).attr('stroke', '#000');
+      console.log('Bar hovered:', d.name, d.status);
+    })
+    .on('mouseout', function() {
+      d3.select(this).attr('stroke-width', 0.5).attr('stroke', '#444');
+    });
+      // Add transparent click overlay to ensure clickability
+  barGroups.append('rect')
+    .attr('x', d => x(d.start))
+    .attr('y', d => y(d.name))
+    .attr('width', d => {
+      const w = x(d.end) - x(d.start);
+      // Ensure minimum width of 20px for clickable area
+      return Math.max(w, 20); 
+    })
+    .attr('height', y.bandwidth())
+    .attr('fill', 'transparent')
+    .attr('cursor', 'pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this.parentNode).select('rect').attr('stroke-width', 2).attr('stroke', '#000');
+    })
+    .on('mouseout', function() {
+      d3.select(this.parentNode).select('rect').attr('stroke-width', 0.5).attr('stroke', '#444');
+    });  // Labels - add to bar groups
+  barGroups.append('text')
     .attr('class', 'label')
     .attr('x', d => x(d.start) + 4)
     .attr('y', d => y(d.name) + y.bandwidth()/2 + 5)
     .attr('font-size', 12)
     .attr('fill', '#fff')
+    .attr('pointer-events', 'none') // Ensure text doesn't interfere with clicks
     .text(d => d.name);
   // Add subtle border and background to Gantt chart
   d3.select(ganttDiv).select('svg')
@@ -185,14 +232,31 @@ function renderProgramGanttChartForId(projects, ganttDivId) {
 function showProjectDetails(project) {
   const sidebar = document.getElementById('project-details');
   if (!sidebar) return;
+  
+  // For debugging
+  console.log('Project clicked:', project);
+  
   let html = `<div class="card shadow-sm"><div class="card-body">
     <h4>${project.name}</h4>`;
   html += `<div class="mb-2 text-muted">${project.description || ''}</div>`;
   html += `<div><strong>Owner:</strong> ${project.owner || 'N/A'}</div>`;
   html += `<div><strong>Status:</strong> ${project.status || 'N/A'}</div>`;
   html += `<div><strong>Criticality:</strong> ${project.criticality || 'N/A'}</div>`;
-  html += `<div><strong>Start:</strong> ${project.start ? formatDate(project.start.toISOString()) : 'N/A'}</div>`;
-  html += `<div><strong>End:</strong> ${project.end ? formatDate(project.end.toISOString()) : 'N/A'}</div>`;
+    // Use either start/end or startDate/endDate properties (whichever is available)
+  // Print all date-related properties to debug
+  console.log('Date properties:', {
+    start: project.start,
+    end: project.end,
+    startDate: project.startDate,
+    endDate: project.endDate
+  });
+  
+  const startDate = project.start || project.startDate;
+  const endDate = project.end || project.endDate;
+  
+  html += `<div><strong>Start:</strong> ${startDate ? formatDate(startDate instanceof Date ? startDate.toISOString() : startDate) : 'N/A'}</div>`;
+  html += `<div><strong>End:</strong> ${endDate ? formatDate(endDate instanceof Date ? endDate.toISOString() : endDate) : 'N/A'}</div>`;
+  
   if (project.cost) html += `<div><strong>Cost:</strong> £${Number(project.cost).toLocaleString()}</div>`;
   html += '</div></div>';
   sidebar.innerHTML = html;
